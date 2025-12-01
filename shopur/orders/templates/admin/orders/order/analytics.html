@@ -1,0 +1,357 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Аналитика заказов | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Главная</a>
+    &rsaquo; <a href="{% url 'admin:orders_order_changelist' %}">Заказы</a>
+    &rsaquo; Аналитика
+  </div>
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+  <style>
+    .analytics-wrapper{
+      font-family:'Source Sans 3','Segoe UI',sans-serif;
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+    }
+    .analytics-card{
+      background:var(--admin-panel,#fff);
+      border:1px solid var(--admin-border,#e8dbc5);
+      border-radius:1.2rem;
+      padding:1.5rem;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+    }
+    .analytics-filter-form{
+      display:flex;
+      flex-wrap:wrap;
+      gap:1rem;
+      align-items:flex-end;
+    }
+    .analytics-filter-form label{
+      text-transform:uppercase;
+      font-size:.75rem;
+      letter-spacing:.16em;
+      color:var(--admin-muted,#7a6f64);
+    }
+    .analytics-filter-form input,
+    .analytics-filter-form select{
+      min-width:180px;
+    }
+    .analytics-filter-form button{
+      border:none;
+      border-radius:999px;
+      padding:.65rem 1.5rem;
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      background:var(--admin-accent,#c9b38f);
+      color:#1c1b19;
+      cursor:pointer;
+    }
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:1rem;
+    }
+    .summary-card h3{
+      margin:0;
+      text-transform:uppercase;
+      font-size:.78rem;
+      letter-spacing:.2em;
+      color:var(--admin-muted,#7a6f64);
+    }
+    .summary-card p{
+      font-size:1.6rem;
+      margin:.3rem 0 0;
+      font-weight:600;
+    }
+    .charts-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:1.5rem;
+    }
+    .chart-card h3{
+      text-transform:uppercase;
+      font-size:.85rem;
+      letter-spacing:.2em;
+      margin-top:0;
+    }
+    .chart-actions{
+      margin-top:.5rem;
+      text-align:right;
+    }
+    .chart-actions button{
+      border:1px solid var(--admin-border,#e8dbc5);
+      border-radius:999px;
+      padding:.3rem .9rem;
+      background:transparent;
+      cursor:pointer;
+    }
+    .tables-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:1.25rem;
+    }
+    .analytics-table{
+      width:100%;
+      border-collapse:collapse;
+    }
+    .analytics-table th,
+    .analytics-table td{
+      padding:.45rem .35rem;
+      border-bottom:1px solid var(--admin-border,#e8dbc5);
+      text-align:left;
+    }
+    .analytics-table th{
+      text-transform:uppercase;
+      font-size:.7rem;
+      letter-spacing:.16em;
+      color:var(--admin-muted,#7a6f64);
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div id="content-main" class="analytics-wrapper">
+    <div class="analytics-card">
+      <form method="get" class="analytics-filter-form">
+        <div>
+          <label for="id_start_date">Начало периода</label><br>
+          <input type="date" id="id_start_date" name="start_date" value="{{ start_date }}">
+        </div>
+        <div>
+          <label for="id_end_date">Конец периода</label><br>
+          <input type="date" id="id_end_date" name="end_date" value="{{ end_date }}">
+        </div>
+        <div>
+          <label for="id_status">Статус</label><br>
+          <select id="id_status" name="status">
+            <option value="">Все статусы</option>
+            {% for st in statuses %}
+              <option value="{{ st.id }}" {% if selected_status == st.id|stringformat:"s" %}selected{% endif %}>
+                {{ st.status }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <button type="submit">Применить</button>
+        </div>
+        <div>
+          <button type="submit" name="export" value="csv">Экспорт CSV</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="summary-grid">
+      <div class="analytics-card summary-card">
+        <h3>Выручка</h3>
+        <p>{{ summary.revenue_total|default_if_none:"0" }}</p>
+      </div>
+      <div class="analytics-card summary-card">
+        <h3>Заказы</h3>
+        <p>{{ summary.order_count }}</p>
+      </div>
+      <div class="analytics-card summary-card">
+        <h3>Средний чек</h3>
+        <p>{{ summary.avg_order|floatformat:2 }}</p>
+      </div>
+      <div class="analytics-card summary-card">
+        <h3>Доставлено</h3>
+        <p>{{ summary.delivered }}</p>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="analytics-card chart-card">
+        <h3>Динамика выручки</h3>
+        <canvas id="revenueChart" height="160"></canvas>
+        <div class="chart-actions">
+          <button type="button" data-download="revenueChart">Сохранить PNG</button>
+        </div>
+      </div>
+
+      <div class="analytics-card chart-card">
+        <h3>Распределение заказов по статусам</h3>
+        <canvas id="statusChart" height="160"></canvas>
+        <div class="chart-actions">
+          <button type="button" data-download="statusChart">Сохранить PNG</button>
+        </div>
+      </div>
+
+      <div class="analytics-card chart-card">
+        <h3>Топ товаров по выручке</h3>
+        <canvas id="productsChart" height="160"></canvas>
+        <div class="chart-actions">
+          <button type="button" data-download="productsChart">Сохранить PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tables-grid">
+      <div class="analytics-card">
+        <h3>Топ клиентов</h3>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>Клиент</th>
+              <th>Заказы</th>
+              <th>Сумма</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for customer in top_customers %}
+              <tr>
+                <td>{{ customer.user__username }}<br><small>{{ customer.user__email }}</small></td>
+                <td>{{ customer.order_count }}</td>
+                <td>{{ customer.total }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="3">Нет данных</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="analytics-card">
+        <h3>Заказы по статусам</h3>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>Статус</th>
+              <th>Количество</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in status_breakdown %}
+              <tr>
+                <td>{{ row.status__status }}</td>
+                <td>{{ row.count }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="2">Нет данных</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="analytics-card">
+        <h3>Топ товары</h3>
+        <table class="analytics-table">
+          <thead>
+            <tr>
+              <th>Товар</th>
+              <th>Выручка</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prod in top_products %}
+              <tr>
+                <td>{{ prod.shop_product__product__name_product }}</td>
+                <td>{{ prod.total|default_if_none:"0" }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="2">Нет данных</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  {{ chart_payload|json_script:"analytics-chart-data" }}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const payload = JSON.parse(document.getElementById('analytics-chart-data').textContent);
+      const palettes = ['#c9b38f','#a48353','#6d645c','#1c1b19','#f2ead9','#f6eee8'];
+
+      const revenueCtx = document.getElementById('revenueChart');
+      if (revenueCtx) {
+        new Chart(revenueCtx, {
+          type: 'line',
+          data: {
+            labels: payload.revenue.labels,
+            datasets: [
+              {
+                label: 'Выручка',
+                data: payload.revenue.revenue,
+                borderColor: palettes[0],
+                backgroundColor: 'rgba(201,179,143,.3)',
+                tension:.35,
+                yAxisID:'y'
+              },
+              {
+                label: 'Заказы',
+                data: payload.revenue.count,
+                borderColor: palettes[3],
+                backgroundColor: 'rgba(28,27,25,.2)',
+                type:'bar',
+                yAxisID:'y1'
+              }
+            ]
+          },
+          options: {
+            responsive:true,
+            interaction:{mode:'index',intersect:false},
+            stacked:false,
+            scales:{
+              y:{type:'linear',display:true,position:'left'},
+              y1:{type:'linear',display:true,position:'right',grid:{drawOnChartArea:false}}
+            }
+          }
+        });
+      }
+
+      const statusCtx = document.getElementById('statusChart');
+      if (statusCtx) {
+        new Chart(statusCtx, {
+          type: 'doughnut',
+          data: {
+            labels: payload.status.labels,
+            datasets: [{
+              data: payload.status.values,
+              backgroundColor: palettes
+            }]
+          }
+        });
+      }
+
+      const productsCtx = document.getElementById('productsChart');
+      if (productsCtx) {
+        new Chart(productsCtx, {
+          type: 'bar',
+          data: {
+            labels: payload.products.labels,
+            datasets: [{
+              label: 'Выручка',
+              data: payload.products.values,
+              backgroundColor: 'rgba(164,131,83,.7)'
+            }]
+          },
+          options:{indexAxis:'y'}
+        });
+      }
+
+      document.querySelectorAll('[data-download]').forEach(button => {
+        button.addEventListener('click', () => {
+          const target = button.dataset.download;
+          const canvas = document.getElementById(target);
+          if (!canvas) return;
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = `${target}.png`;
+          link.click();
+        });
+      });
+    });
+  </script>
+{% endblock %}

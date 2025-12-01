@@ -1,0 +1,226 @@
+:root {
+  --admin-bg: #f8f5ef;
+  --admin-panel: #ffffff;
+  --admin-ink: #1c1b19;
+  --admin-muted: #7a6f64;
+  --admin-accent: #c9b38f;
+  --admin-border: #e8dbc5;
+  --admin-dark: #0f0e0c;
+  --admin-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+body {
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  background: var(--admin-bg);
+  color: var(--admin-ink);
+}
+
+#header {
+  background: var(--admin-panel);
+  border-bottom: 1px solid var(--admin-border);
+  padding: 1.5rem 2rem;
+  box-shadow: var(--admin-shadow);
+}
+
+#header h1 {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.35rem;
+  font-size: 1.8rem;
+  margin: 0;
+  color: var(--admin-ink);
+}
+
+.admin-brand {
+  text-decoration: none;
+}
+
+.admin-brand-eyebrow {
+  display: block;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--admin-muted);
+}
+
+.admin-brand-title {
+  display: block;
+  font-family: "Cinzel", serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.25em;
+  color: var(--admin-ink);
+}
+
+.admin-global-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-global-link {
+  display: inline-flex;
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--admin-border);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  text-decoration: none;
+  color: var(--admin-ink);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.admin-global-link:hover,
+.admin-global-link:focus {
+  border-color: var(--admin-ink);
+  background: var(--admin-accent);
+  color: var(--admin-dark);
+}
+
+#user-tools {
+  color: var(--admin-muted);
+}
+
+#user-tools a {
+  color: var(--admin-ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#content {
+  padding: 2.5rem;
+}
+
+.module {
+  border-radius: 1.25rem;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-panel);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+  background: transparent;
+  color: var(--admin-ink);
+  border-bottom: 1px solid var(--admin-border);
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.dashboard #content-main .module {
+  padding: 1rem 1.25rem;
+}
+
+.grp-module,
+.group,
+.module ul {
+  border-color: var(--admin-border);
+}
+
+.submit-row {
+  background: transparent;
+  border-top: none;
+  padding: 1.5rem 0 0;
+}
+
+.submit-row input {
+  background: var(--admin-accent);
+  color: var(--admin-dark);
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  padding: 0.65rem 1.75rem;
+  text-transform: uppercase;
+}
+
+.submit-row input:hover,
+.submit-row input:focus {
+  background: #bfa275;
+}
+
+.button,
+.deletelink,
+.addlink,
+.changelink,
+.viewlink {
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: 1px solid var(--admin-border);
+  padding: 0.35rem 0.95rem;
+  color: var(--admin-ink);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.button:hover,
+.deletelink:hover,
+.addlink:hover,
+.changelink:hover,
+.viewlink:hover {
+  border-color: var(--admin-ink);
+  background: var(--admin-accent);
+  color: var(--admin-dark);
+}
+
+table {
+  border-color: var(--admin-border);
+}
+
+table thead th {
+  background: #f2ead9;
+  color: var(--admin-dark);
+  letter-spacing: 0.1em;
+}
+
+fieldset.module {
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+}
+
+fieldset.module .form-row {
+  margin: 0 0 1.2rem;
+}
+
+fieldset.module label {
+  color: var(--admin-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+}
+
+input,
+select,
+textarea {
+  border-radius: 0.85rem;
+  border: 1px solid var(--admin-border);
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(201, 179, 143, 0.35);
+  outline: none;
+}
+
+.login #container {
+  background: var(--admin-panel);
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  box-shadow: var(--admin-shadow);
+}
+
+.login h1 {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.35em;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.login .submit-row {
+  text-align: center;
+}

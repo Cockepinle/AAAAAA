@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Заказ №{{ order.id }}{% endblock %}
+
+{% block content %}
+<section class="order-detail-page py-5">
+  <div class="container">
+
+    <!-- Заголовок: адаптивный, вертикально на мобиле -->
+    <div class="order-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+      <div>
+        <p class="text-uppercase text-muted mb-1">создан {{ order.date_create|date:'d.m.Y H:i' }}</p>
+        <h1 class="display-5" style="font-family:'Cinzel',serif; font-size:clamp(1.75rem, 5vw, 2.5rem);">Заказ №{{ order.id }}</h1>
+      </div>
+      <div class="w-100 w-md-auto text-start text-md-end">
+        <span class="status-badge status-{{ order.status.status|slugify|default:'unknown' }} d-block mb-2">
+          {{ order.status.status }}
+        </span>
+
+        <p class="text-uppercase small text-muted mb-2">
+          Оплата: {{ payment_label }} · {{ payment_status }}
+        </p>
+
+        <a href="{% url 'download_receipt' order.id %}"
+           target="_blank" rel="noopener"
+           class="btn btn-outline-dark rounded-pill w-100 w-md-auto">
+          Скачать чек
+        </a>
+      </div>
+    </div>
+
+    <!-- Информация о заказе: адаптивная сетка (1 на мобиле, 3 на десктопе) -->
+    <div class="row g-2 g-md-3 order-info-grid mt-4">
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="info-card">
+          <p class="text-uppercase text-muted small mb-1">Адрес / Самовывоз</p>
+          <p class="mb-0 small">{{ order.address_delivery }}</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="info-card">
+          <p class="text-uppercase text-muted small mb-1">Комментарий</p>
+          <p class="mb-0 small">{{ order.comment|default:"Комментарий отсутствует" }}</p>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <div class="info-card text-start text-lg-end">
+          <p class="text-uppercase text-muted small mb-1">Сумма</p>
+          <p class="fs-3 mb-1">{{ order.total_amount }} ₽</p>
+          <p class="text-uppercase small mb-0">{{ payment_label }}</p>
+          <p class="text-muted small mb-0">{{ payment_status }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Позиции -->
+    <h4 class="mt-5 mb-3">Позиции</h4>
+
+    <div class="order-items-grid">
+
+      {% for it in items %}
+      <div class="order-item-card">
+
+        <!-- Фото: адаптивное размещение -->
+        <div class="order-item-img">
+          {% with it.shop_product.images.all.0 as thumb %}
+            {% if thumb %}
+              <img src="{{ thumb.image_url }}" alt="{{ it.shop_product.product.name_product }}" loading="lazy">
+            {% else %}
+              <img src="{% static 'images/placeholder.svg' %}" alt="Нет изображения">
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <!-- Информация -->
+        <div class="order-item-info">
+
+          <a href="{% url 'product_detail' it.shop_product.id %}" class="item-title">
+            {{ it.shop_product.product.name_product }}
+          </a>
+
+          <div class="item-meta small">
+            Материал: {{ it.shop_product.material.material_name }}
+            · Размер: {{ it.shop_product.size.size_name }}
+          </div>
+
+          <div class="item-qty small">
+            Количество: {{ it.quantity }}
+          </div>
+
+        </div>
+
+        <!-- Цена -->
+        <div class="order-item-price text-start text-md-end">
+          <div class="item-price">{{ it.shop_product.price }} ₽</div>
+          <div class="item-total small">Итого: {{ it.line_total }} ₽</div>
+        </div>
+
+      </div>
+      {% empty %}
+      <p class="text-muted small">Нет позиций для отображения.</p>
+      {% endfor %}
+
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<section class="py-4" style="background:#f4efe9; border-bottom:1px solid #eee;">
+  <div class="container">
+    <h1 class="display-5 fw-bold" style="letter-spacing:.5px" data-translation-key="register_heading">Создание аккаунта</h1>
+  </div>
+</section>
+
+<div class="container" style="max-width:720px; margin-top:24px">
+    <div class="card">
+        <div class="card-body">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label class="form-label" data-translation-key="register_username_label">Логин</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" data-translation-key="register_email_label">Email</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" data-translation-key="register_password1_label">Пароль</label>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" data-translation-key="register_password2_label">Подтверждение пароля</label>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                  </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-gold" data-translation-key="register_submit">Зарегистрироваться</button>
+                    <a href="{% url 'login' %}" class="btn btn-outline-secondary" data-translation-key="register_login_cta">Уже есть аккаунт?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

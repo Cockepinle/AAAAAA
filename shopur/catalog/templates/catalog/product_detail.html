@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.product.name_product }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/">Каталог</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.product.name_product }}</li>
+        </ol>
+    </nav>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row gy-4">
+                <!-- Gallery -->
+                <div class="col-12 col-md-6">
+                    <div class="mb-3 text-center">
+                        {% with product.images.all.0 as main_img %}
+                            {% if main_img %}
+                                <img id="main-product-image" src="{{ main_img.image_url }}" class="img-fluid rounded shadow-sm" style="max-height:440px; width:100%; object-fit:contain; background:#fff;">
+                            {% else %}
+                                <img id="main-product-image" src="{% static 'images/placeholder.svg' %}" class="img-fluid rounded shadow-sm" style="max-height:440px; width:100%; object-fit:contain; background:#fff;">
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    {% if product.images.all|length > 1 %}
+                    <div class="d-flex gap-2 justify-content-center flex-wrap">
+                        {% for img in product.images.all %}
+                            <button class="btn p-0 thumb-btn" type="button" data-src="{{ img.image_url }}" aria-label="thumbnail">
+                                <img src="{{ img.image_url }}" class="img-thumbnail" style="height:84px; width:84px; object-fit:cover;">
+                            </button>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                        <!-- Details -->
+                <div class="col-12 col-md-6">
+                    <h2 class="h4 mb-2">{{ product.product.name_product }}</h2>
+                            <button class="btn btn-outline-none favorite-toggle" data-product-id="{{ product.id }}" style="float:right;font-size:1.4rem;border:none;background:transparent">♡</button>
+                    <p class="text-muted small mb-2">Камень: <strong class="text-body">{{ product.stones.stones_name }}</strong></p>
+                    <div class="mb-3">
+                        <span class="h3 fw-bold">{{ product.price }} ₽</span>
+                        {% if product.quantity <= 0 %}
+                            <span class="badge bg-secondary ms-2">Нет в наличии</span>
+                        {% endif %}
+                    </div>
+
+                    <p class="mb-3">{{ product.product.description_product }}</p>
+
+                    <form id="add-to-cart-form" class="row g-2 align-items-center">
+                        <div class="col-6">
+                            <label class="form-label small">Материал</label>
+                            <select id="material-select" class="form-select form-select-sm">
+                                {% for mid, mname in materials %}
+                                    <option value="{{ mid }}" {% if product.material.id == mid %}selected{% endif %}>{{ mname }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label small">Размер</label>
+                            <select id="size-select" class="form-select form-select-sm">
+                                {% for sid, sname in sizes %}
+                                    <option value="{{ sid }}" {% if product.size.id == sid %}selected{% endif %}>{{ sname }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-6">
+                            <label class="form-label small">Количество</label>
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-secondary" type="button" id="qty-decr">−</button>
+                                <input type="number" id="qty-input" class="form-control text-center" value="1" min="1" max="{{ product.quantity }}">
+                                <button class="btn btn-outline-secondary" type="button" id="qty-incr">+</button>
+                            </div>
+                            <div class="form-text">В наличии: {{ product.quantity }}</div>
+                        </div>
+
+                        <div class="col-6 d-flex align-items-end">
+                            {% if product.quantity > 0 %}
+                                <button id="add-to-cart" data-id="{{ product.id }}" type="button" class="btn btn-gold w-100">Добавить в корзину</button>
+                            {% else %}
+                                <button disabled class="btn btn-secondary w-100">Нет в наличии</button>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-12">
+                            <a href="/" class="btn btn-link">← Назад в каталог</a>
+                        </div>
+
+                        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS: thumbnails, qty controls, add-to-cart -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const mainImg = document.getElementById('main-product-image');
+    document.querySelectorAll('.thumb-btn').forEach(b => b.addEventListener('click', (e) => {
+        const src = b.dataset.src;
+        if (src && mainImg) mainImg.src = src;
+    }));
+
+    const qtyInput = document.getElementById('qty-input');
+    const incr = document.getElementById('qty-incr');
+    const decr = document.getElementById('qty-decr');
+    incr && incr.addEventListener('click', () => { qtyInput.value = Math.min(parseInt(qtyInput.max || '9999'), (parseInt(qtyInput.value||'0')||0)+1); });
+    decr && decr.addEventListener('click', () => { qtyInput.value = Math.max(1, (parseInt(qtyInput.value||'0')||0)-1); });
+
+    const btn = document.getElementById('add-to-cart');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
+        const token = document.getElementById('csrf-token').value;
+        const materialId = document.getElementById('material-select').value;
+        const sizeId = document.getElementById('size-select').value;
+        const quantity = parseInt(document.getElementById('qty-input').value) || 1;
+
+        fetch(`/product/${id}/add/`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': token },
+            body: JSON.stringify({ material_id: materialId, size_id: sizeId, quantity: quantity })
+        })
+        .then(r => {
+            const ct = r.headers.get('content-type') || '';
+            if (r.redirected || ct.indexOf('application/json') === -1) {
+                window.location.href = '/login/?next=' + encodeURIComponent(window.location.pathname);
+                return Promise.reject('redirected-to-login');
+            }
+            return r.json();
+        })
+        .then(data => {
+            if (data.error) {
+                // show basic alert for now
+                alert(data.error);
+            } else {
+                // small success feedback then reload to update stock
+                alert(data.message || 'Добавлено в корзину');
+                window.location.reload();
+            }
+        })
+        .catch(err => { if (err !== 'redirected-to-login') alert('Ошибка при добавлении'); });
+    });
+});
+</script>
+
+<style>
+    /* Tidy small overrides specific to this page */
+    .thumb-btn { border: none; background: transparent; }
+    .thumb-btn img { border-radius: 6px; }
+    @media (max-width: 576px) {
+        #main-product-image { max-height: 320px; }
+    }
+</style>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function getCSRF(){
+        const el = document.getElementById('csrf-token');
+        if (el && el.value) return el.value;
+        const v = (`; ${document.cookie}`).split(`; csrftoken=`);
+        if (v.length === 2) return v.pop().split(';').shift();
+        return null;
+    }
+    const fav = document.querySelector('.favorite-toggle');
+    if (fav){
+        fav.addEventListener('click', () => {
+            const id = fav.dataset.productId;
+            fetch(`/favorites/toggle/${id}/`, { method: 'POST', credentials: 'same-origin', headers: { 'X-CSRFToken': getCSRF() } })
+                .then(r => r.json())
+                .then(data => { fav.textContent = data.added ? '♥' : '♡'; })
+                .catch(() => alert('Ошибка'));
+        });
+    }
+});
+</script>
+{% endblock %}

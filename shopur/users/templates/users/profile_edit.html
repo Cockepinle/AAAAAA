@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать профиль{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:840px">
+  <h1 class="h4 mb-3" data-translation-key="profile_edit_title">Редактировать профиль</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="{{ form.first_name.id_for_label }}" data-translation-key="profile_field_first_name">Имя</label>
+                {{ form.first_name }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="{{ form.last_name.id_for_label }}" data-translation-key="profile_field_last_name">Фамилия</label>
+                {{ form.last_name }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="{{ form.patronymic.id_for_label }}" data-translation-key="profile_field_patronymic">Отчество</label>
+                {{ form.patronymic }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="{{ form.email.id_for_label }}" data-translation-key="profile_field_email">Email</label>
+                {{ form.email }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="{{ form.username.id_for_label }}" data-translation-key="profile_field_username">Логин</label>
+                {{ form.username }}
+              </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+              <button class="btn btn-gold" type="submit" data-translation-key="profile_button_save">Сохранить</button>
+              <a class="btn btn-outline-secondary" href="{% url 'profile' %}" data-translation-key="profile_button_cancel">Отмена</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title" data-translation-key="profile_form_section_settings">Настройки</h5>
+            <div class="mb-3">
+              <label class="form-label" for="{{ settings_form.theme.id_for_label }}" data-translation-key="profile_settings_label_theme">
+                {{ settings_form.theme.label }}
+              </label>
+              {{ settings_form.theme }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="{{ settings_form.language.id_for_label }}" data-translation-key="profile_settings_label_language">
+                {{ settings_form.language.label }}
+              </label>
+              {{ settings_form.language }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

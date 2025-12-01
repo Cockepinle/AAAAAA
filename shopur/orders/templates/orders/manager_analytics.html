@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Аналитика продаж{% endblock %}
+
+{% block content %}
+<div class="py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+      <p class="text-uppercase text-muted small mb-1">Подсистема аналитики</p>
+      <h1 class="h3 mb-0">Сводка продаж</h1>
+    </div>
+    <div>
+      <a href="{% url 'orders_list' %}" class="btn btn-outline-secondary rounded-pill">К заказам</a>
+    </div>
+  </div>
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label text-uppercase small text-muted">Начало периода</label>
+          <input type="date" class="form-control" name="start_date" value="{{ start_date }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label text-uppercase small text-muted">Конец периода</label>
+          <input type="date" class="form-control" name="end_date" value="{{ end_date }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label text-uppercase small text-muted">Статус</label>
+          <select name="status" class="form-select">
+            <option value="">Все статусы</option>
+            {% for st in statuses %}
+              <option value="{{ st.id }}" {% if selected_status == st.id|stringformat:"s" %}selected{% endif %}>{{ st.status }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+          <button class="btn btn-gold flex-grow-1" type="submit">Применить</button>
+          <button class="btn btn-outline-secondary" type="submit" name="export" value="csv">CSV</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card summary-panel">
+        <div class="card-body">
+          <p class="text-muted text-uppercase small mb-1">Выручка</p>
+          <p class="h4 mb-0">{{ summary.revenue_total|default_if_none:"0" }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card summary-panel">
+        <div class="card-body">
+          <p class="text-muted text-uppercase small mb-1">Заказы</p>
+          <p class="h4 mb-0">{{ summary.order_count }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card summary-panel">
+        <div class="card-body">
+          <p class="text-muted text-uppercase small mb-1">Средний чек</p>
+          <p class="h4 mb-0">{{ summary.avg_order|floatformat:2 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card summary-panel">
+        <div class="card-body">
+          <p class="text-muted text-uppercase small mb-1">Доставлено</p>
+          <p class="h4 mb-0">{{ summary.delivered }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-6">
+      <div class="card chart-panel">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h4 class="h6 text-uppercase text-muted mb-0">Динамика выручки</h4>
+            <button type="button" class="btn btn-light btn-sm rounded-pill" data-download="managerRevenueChart">Сохранить PNG</button>
+          </div>
+          <canvas id="managerRevenueChart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card chart-panel">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h4 class="h6 text-uppercase text-muted mb-0">Статусы заказов</h4>
+            <button type="button" class="btn btn-light btn-sm rounded-pill" data-download="managerStatusChart">Сохранить PNG</button>
+          </div>
+          <canvas id="managerStatusChart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="card chart-panel">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h4 class="h6 text-uppercase text-muted mb-0">Топ товаров по выручке</h4>
+            <button type="button" class="btn btn-light btn-sm rounded-pill" data-download="managerProductsChart">Сохранить PNG</button>
+          </div>
+          <canvas id="managerProductsChart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="h6 text-uppercase text-muted mb-3">Топ клиентов</h4>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="small text-uppercase text-muted">
+                <tr>
+                  <th>Клиент</th>
+                  <th>Заказы</th>
+                  <th>Сумма</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for customer in top_customers %}
+                  <tr>
+                    <td>
+                      <strong>{{ customer.user__username }}</strong><br>
+                      <span class="text-muted small">{{ customer.user__email }}</span>
+                    </td>
+                    <td>{{ customer.order_count }}</td>
+                    <td>{{ customer.total }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="3" class="text-center text-muted">Нет данных</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h4 class="h6 text-uppercase text-muted mb-3">Заказы по статусам</h4>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="small text-uppercase text-muted">
+                <tr>
+                  <th>Статус</th>
+                  <th>Количество</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in status_breakdown %}
+                  <tr>
+                    <td>{{ row.status__status }}</td>
+                    <td>{{ row.count }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="2" class="text-center text-muted">Нет данных</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="h6 text-uppercase text-muted mb-3">Топ товаров</h4>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="small text-uppercase text-muted">
+                <tr>
+                  <th>Товар</th>
+                  <th>Выручка</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for prod in top_products %}
+                  <tr>
+                    <td>{{ prod.shop_product__product__name_product }}</td>
+                    <td>{{ prod.total|default_if_none:"0" }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="2" class="text-center text-muted">Нет данных</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ chart_payload|json_script:"manager-analytics-data" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const payload = JSON.parse(document.getElementById('manager-analytics-data').textContent);
+    const palettes = ['#c9b38f','#a48353','#6d645c','#1c1b19','#f2ead9','#f6eee8'];
+
+    const revenueCtx = document.getElementById('managerRevenueChart');
+    if (revenueCtx) {
+      new Chart(revenueCtx, {
+        type: 'line',
+        data: {
+          labels: payload.revenue.labels,
+          datasets: [
+            {
+              label: 'Выручка',
+              data: payload.revenue.revenue,
+              borderColor: palettes[0],
+              backgroundColor: 'rgba(201,179,143,.3)',
+              tension:.3,
+              yAxisID:'y'
+            },
+            {
+              label: 'Заказы',
+              data: payload.revenue.count,
+              borderColor: palettes[3],
+              backgroundColor: 'rgba(28,27,25,.15)',
+              type:'bar',
+              yAxisID:'y1'
+            }
+          ]
+        },
+        options:{
+          responsive:true,
+          interaction:{mode:'index',intersect:false},
+          stacked:false,
+          scales:{
+            y:{type:'linear',display:true,position:'left'},
+            y1:{type:'linear',display:true,position:'right',grid:{drawOnChartArea:false}}
+          }
+        }
+      });
+    }
+
+    const statusCtx = document.getElementById('managerStatusChart');
+    if (statusCtx) {
+      new Chart(statusCtx, {
+        type:'doughnut',
+        data:{
+          labels: payload.status.labels,
+          datasets:[{
+            data: payload.status.values,
+            backgroundColor: palettes
+          }]
+        }
+      });
+    }
+
+    const productsCtx = document.getElementById('managerProductsChart');
+    if (productsCtx) {
+      new Chart(productsCtx, {
+        type:'bar',
+        data:{
+          labels: payload.products.labels,
+          datasets:[{
+            label:'Выручка',
+            data: payload.products.values,
+            backgroundColor: 'rgba(164,131,83,.7)'
+          }]
+        },
+        options:{indexAxis:'y'}
+      });
+    }
+
+    document.querySelectorAll('[data-download]').forEach(button => {
+      button.addEventListener('click', () => {
+        const canvas = document.getElementById(button.dataset.download);
+        if (!canvas) return;
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `${button.dataset.download}.png`;
+        link.click();
+      });
+    });
+  });
+</script>
+{% endblock %}

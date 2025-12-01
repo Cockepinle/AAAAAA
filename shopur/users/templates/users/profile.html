@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:960px">
+  <section class="p-4 rounded-3 mb-4" style="background:linear-gradient(135deg,#fbf8f5,#efe8dc)">
+    <div class="d-flex align-items-center gap-3">
+      <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:72px;height:72px;background:#fff;border:1px solid #eee;color:#bfa46a;font-weight:600;font-size:26px">
+        {{ user.username|first|upper }}
+      </div>
+      <div class="flex-grow-1">
+        <h2 class="h4 mb-1"><span data-translation-key="profile_greeting">Добро пожаловать</span>, {{ user.username }}! {% if user.is_staff %}<span class="badge bg-accent text-dark ms-2">👑 Администратор</span>{% endif %}</h2>
+        <div class="text-muted">{{ user.email|default:'Email не указан' }}</div>
+      </div>
+      <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center ms-auto">
+        {% if user.is_staff or user.is_superuser %}
+        <a href="/admin/" class="btn btn-outline-dark btn-sm" title="Админ-панель" data-translation-key="profile_admin_panel">⚙️ Админ-панель</a>
+        {% endif %}
+        <a href="{% url 'profile_edit' %}" class="btn btn-outline-secondary btn-sm" data-translation-key="profile_edit_link">Редактировать профиль</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="row g-3">
+    <div class="col-12 col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" data-translation-key="profile_card_title_personal">Аккаунт</h5>
+          <div class="mb-2">
+            <span class="text-muted" data-translation-key="profile_label_username">Логин:</span> {{ user.username }}
+          </div>
+          <div class="mb-2">
+            <span class="text-muted" data-translation-key="profile_label_email">Email:</span> {{ user.email|default:'Email не указан' }}
+          </div>
+          {% if settings %}
+          <div class="mb-2">
+            <span class="text-muted" data-translation-key="profile_theme_label">Тема:</span> {{ settings.get_theme_display }}
+          </div>
+          <div class="mb-2">
+            <span class="text-muted" data-translation-key="profile_language_label">Язык:</span> {{ settings.get_language_display }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title" data-translation-key="profile_section_actions">Быстрые действия</h5>
+          <div class="d-grid gap-2">
+            <a class="btn btn-gold" href="{% url 'favorites' %}" data-translation-key="profile_action_favorites">❤️ Избранное</a>
+            <a class="btn btn-outline-secondary" href="/orders/" data-translation-key="profile_action_orders">📦 Заказы</a>
+            <a class="btn btn-outline-secondary" href="{% url 'cart' %}" data-translation-key="profile_action_cart">🛒 Корзина</a>
+            {% if user.is_staff or user.is_superuser %}
+            <hr class="my-2">
+            <a class="btn btn-outline-dark" href="/admin/audit/auditlog/" title="История изменений" data-translation-key="profile_action_audit">📋 История изменений</a>
+            <a class="btn btn-outline-dark" href="/admin/orders/order/" title="Управление заказами" data-translation-key="profile_action_manage_orders">📊 Управление заказами</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

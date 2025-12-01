@@ -1,0 +1,2350 @@
+﻿:root{
+    --bg:#f8f5ef;
+    --cream:#f2ead9;
+    --ink:#1c1b19;
+    --muted:#6d645c;
+    --accent:#c9b38f;
+    --accent-dark:#a48353;
+    --panel:#f6eee8;
+    --border:#efe3d1;
+    --accent-text:#1c1b19;
+    --shadow:0 18px 40px rgba(0,0,0,.08);
+    --panel-soft:#ffffff;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Source Sans 3','Segoe UI',sans-serif;
+    overflow-x:hidden;
+}
+
+body.dark {
+    background-color: var(--bg) !important;
+    color: var(--ink) !important;
+}
+
+.dark {
+    background-color: var(--bg);
+}
+
+.dark,
+.dark * {
+    color: var(--ink) !important;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark p,
+.dark li,
+.dark button,
+.dark label,
+.dark dt,
+.dark dd {
+    color: var(--ink) !important;
+}
+
+.dark a {
+    color: var(--accent) !important;
+    text-decoration: none;
+}
+
+.dark a:hover {
+    color: var(--accent-dark) !important;
+    text-decoration: underline;
+}
+
+.dark button,
+.dark .btn {
+    color: var(--ink) !important;
+}
+
+.dark .muted,
+.dark .text-muted,
+.dark small {
+    color: var(--muted) !important;
+}
+
+.dark a:hover {
+    color: var(--accent-dark);
+    text-decoration: underline;
+}
+
+.dark p {
+    color: var(--ink);
+}
+
+.dark .text-decoration-none {
+    text-decoration: none;
+}
+
+.dark .link-reset {
+    color: var(--muted);
+}
+
+.dark .link-reset:hover {
+    color: var(--accent);
+}
+
+.light{
+    --bg:#f8f5ef;
+    --cream:#f2ead9;
+    --ink:#1c1b19;
+    --muted:#6d645c;
+    --accent:#c9b38f;
+    --panel:#ffffff;
+    --border:#efe3d1;
+}
+.dark{
+    --bg:#0d0d0d;
+    --cream:#1a1a1a;
+    --ink:#e8e8e8;
+    --muted:#b8b8b8;
+    --accent:#d4af6a;
+    --accent-dark:#c9a05a;
+    --panel:#1f1f1f;
+    --border:#3a3a3a;
+    --shadow:0 30px 65px rgba(0,0,0,.8);
+    --panel-soft:#252525;
+    --accent-text:#1c1b19;
+}
+
+.bg-cream{ background:var(--cream); }
+.dark .bg-cream { background: var(--cream); }
+.bg-accent{ background:var(--accent); color:var(--accent-text); }
+.btn-gold{
+    background:var(--accent);
+    color:var(--accent-text);
+    border:none;
+    border-radius:999px;
+    padding:.65rem 1.75rem;
+    text-transform:uppercase;
+    font-size:.82rem;
+    letter-spacing:.14em;
+}
+.btn-gold:hover{ background:var(--accent-dark); color:var(--accent-text); }
+
+.lux-header{
+    background:var(--bg);
+    position:sticky;
+    top:0;
+    z-index:1000;
+    border-bottom:1px solid var(--border);
+}
+.brand-banner{
+    background:var(--panel);
+    border-top:4px solid var(--accent);
+    border-bottom:1px solid var(--border);
+}
+.brand-logo{
+    font-family:'Cinzel',serif;
+    font-size:3rem;
+    letter-spacing:1rem;
+    color:var(--ink);
+    display:inline-block;
+}
+.brand-logo:hover{ color:var(--ink); }
+.dark .brand-logo {
+    color: var(--accent);
+}
+.dark .brand-logo:hover {
+    color: var(--accent);
+}
+.lux-logo{
+    font-family:'Cinzel',serif;
+    font-size:1.25rem;
+    letter-spacing:.35rem;
+}
+.navbar .nav-link{
+    letter-spacing:.22em;
+    font-size:.85rem;
+    color:var(--muted);
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus{
+    color:var(--ink);
+}
+.navbar .btn{
+    font-size:.8rem;
+    letter-spacing:.15em;
+}
+.navbar .btn-outline-dark{
+    color:var(--ink);
+    border-color:var(--border);
+    background:transparent;
+}
+.navbar .btn-outline-dark:hover,
+.navbar .btn-outline-dark:focus{
+    color:var(--ink);
+    border-color:var(--ink);
+}
+.navbar .btn-link{
+    border:1px solid transparent;
+    border-radius:999px;
+    letter-spacing:.2em;
+    padding:.45rem 1.4rem;
+    color:var(--muted);
+    text-transform:uppercase;
+    transition:color .2s ease,border-color .2s ease;
+}
+.navbar .btn-link:hover,
+.navbar .btn-link:focus{
+    color:var(--ink);
+    border-color:var(--ink);
+}
+.dark .navbar .btn{
+    color:var(--ink);
+    border-color:rgba(212,175,106,.3);
+}
+.dark .navbar .nav-link{
+    color:var(--muted);
+}
+.dark .navbar .nav-link:hover,
+.dark .navbar .nav-link:focus{
+    color:var(--accent);
+}
+.dark .navbar .btn-link{
+    color:var(--muted);
+    border-color:rgba(212,175,106,.3);
+}
+.dark .navbar .btn-link:hover,
+.dark .navbar .btn-link:focus{
+    color:var(--accent);
+    border-color:var(--accent);
+}
+.mega-nav{ position:static; }
+.mega-menu{
+    min-width:70vw;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:0 0 1rem 1rem;
+    background:var(--panel);
+    box-shadow:var(--shadow);
+}
+.mega-menu .menu-columns{
+    column-count:3;
+    column-gap:3rem;
+}
+.mega-menu .menu-columns a{
+    display:block;
+    color:var(--muted);
+    margin-bottom:.35rem;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    font-size:.78rem;
+}
+.mega-menu .menu-columns a:hover{ color:var(--ink); }
+.mega-menu ul li a{
+    color:var(--muted);
+    text-decoration:none;
+}
+.mega-menu ul li a:hover{
+    color:var(--ink);
+}
+
+.product-card figure{
+    position: relative;
+    margin: 0;
+}
+
+.product-card .card-img-top,
+.product-card .card-image{
+    position:relative; /* ← добавь сюда */
+}
+.hero-overlay{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; color:#fff; padding:2rem;
+    background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.1) 70%,transparent 100%);
+}
+.hero-eyebrow{ text-transform:uppercase; letter-spacing:.5em; font-size:.85rem; margin-bottom:1rem; }
+.hero-overlay h1{ font-family:'Cinzel',serif; font-size:clamp(3rem,7vw,5.5rem); letter-spacing:.6rem; margin-bottom:.5rem; }
+.hero-overlay p{ max-width:620px; letter-spacing:.12em; text-transform:uppercase; }
+
+.home-tags .tag-pill{
+    border:1px solid rgba(0,0,0,.1);
+    border-radius:999px;
+    padding:.4rem 1rem;
+    letter-spacing:.15em;
+    font-size:.75rem;
+    text-transform:uppercase;
+    color:var(--muted);
+}
+.home-tags .tag-pill:hover{ background:var(--panel); color:var(--ink); }
+.category-grid .btn{
+    border-radius:999px;
+    border-color:#d7c4a3;
+    color:var(--muted);
+    letter-spacing:.18em;
+    font-size:.78rem;
+    text-transform:uppercase;
+    padding:.55rem 1rem;
+}
+.category-grid .btn.active,
+.category-grid .btn:hover{
+    background:var(--ink);
+    color:#fff;
+}
+
+.filter-toggle{
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:.75rem;
+}
+.filter-panel .form-control,
+.filter-panel .form-select{
+    border-radius:999px;
+    border:1px solid #e5dfd3;
+    background:var(--panel);
+}
+.link-reset{
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:.75rem;
+    color:var(--muted);
+}
+.link-reset:hover{ color:var(--ink); }
+
+.product-card{
+    border:none;
+    border-radius:1.25rem;
+    overflow:hidden;
+    background:var(--panel-soft);
+    box-shadow:0 12px 32px rgba(0,0,0,.08);
+    transition:transform .3s ease, box-shadow .3s ease;
+    position:relative;
+}
+.product-card:hover{ transform:translateY(-8px); box-shadow:0 18px 40px rgba(0,0,0,.1); }
+.product-card img{ width:100%; height:220px; object-fit:cover; }
+.product-card .card-body{ padding:1.5rem; background:var(--bg); }
+.product-card .card-title{ font-size:1.05rem; margin-bottom:.25rem; }
+.product-card .card-text{ color:var(--muted); margin-bottom:.25rem; }
+.product-card .price{ font-weight:600; letter-spacing:.08em; margin-bottom:1rem; }
+.product-card .catalog-link{ text-transform:uppercase; letter-spacing:.2em; font-size:.8rem; }
+.catalog-grid .product-card{ height:100%; }
+.catalog-grid .favorite-toggle{ top:12px; right:12px; }
+.favorite-toggle{
+    border:none;
+    background:rgba(255,255,255,.95);
+    border-radius:50%;
+    width:42px;
+    height:42px;
+    display:grid;
+    place-items:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    cursor:pointer;
+}
+.favorite-floating{
+    position:absolute;
+    top:12px;
+    right:12px;
+}
+.favorite-card .favorite-floating{
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+    background:var(--panel);
+    border:1px solid rgba(0,0,0,.05);
+    z-index:5;
+}
+
+
+
+/* Компактная плитка товаров (фото слева, описание справа) */
+
+.catalog-grid .product-card{
+    min-height:100%;
+    border-radius:1.125rem;
+    max-width:240px;
+    margin:0 auto;
+}
+.catalog-grid{
+    max-width:1200px;
+    margin:0 auto;
+}
+.catalog-grid .product-card figure{
+    min-height:220px;
+}
+.catalog-grid .card-body{
+    min-height:200px;
+    padding:1.25rem;
+}
+.catalog-grid .favorite-floating{top:12px;right:12px;}
+.catalog-empty{
+    text-align:center;
+    padding:2.25rem;
+    border-radius:1.25rem;
+    border:1px dashed #d9cbb6;
+    color:var(--muted);
+    background:var(--panel);
+}
+.order-items-table{
+    max-width:100%;
+    margin:0 auto;
+    overflow:hidden;
+    border-radius:1.5rem;
+    background:var(--panel);
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+.order-items-header{
+    border-bottom:1px solid #efe3d1;
+    background:var(--panel);
+}
+.order-item-row{
+    border-color:#efe3d1;
+    background:var(--panel);
+}
+.order-item-thumb{
+    width:90px;
+    height:90px;
+    border-radius:1rem;
+    overflow:hidden;
+    background:#f6f3ee;
+    flex-shrink:0;
+}
+.order-item-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.order-item-row p{
+    margin:0;
+}
+.order-item-row .fw-semibold{
+    font-size:1rem;
+}
+.order-items-body .border-bottom:last-child{
+    border-bottom:none;
+}
+@media (max-width:768px){
+    .order-item-card{flex-direction:column;align-items:flex-start;}
+    .order-item-meta{text-align:left;width:100%;}
+}
+.cart-page{
+    background:var(--bg);
+}
+.cart-page h1{
+    font-family:'Cinzel',serif;
+    letter-spacing:.35rem;
+    margin-bottom:1.5rem;
+}
+.cart-card{
+    border:1px solid #efe3d1;
+    border-radius:1.25rem;
+    padding:1.25rem;
+    margin-bottom:1rem;
+    background:var(--panel);
+    box-shadow:0 8px 24px rgba(0,0,0,.05);
+}
+.cart-media img{
+    max-height:120px;
+    border-radius:1rem;
+}
+.qty-control{
+    display:inline-flex;
+    align-items:center;
+    gap:.35rem;
+}
+.qty-control button{
+    border-radius:50%;
+    width:36px;
+    height:36px;
+}
+.cart-summary{
+    border-top:1px solid #eadfce;
+    margin-top:1.5rem;
+    padding-top:1.5rem;
+}
+.cart-summary .total{
+    font-size:1.3rem;
+    font-weight:600;
+}
+.payment-toggle .btn{
+    border-radius:999px !important;
+}
+.card-fields.hidden{
+    height:0;
+    opacity:0;
+    overflow:hidden;
+}
+
+.product-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.5rem;
+}
+.product-list-item{
+    border:1px solid #efe3d1;
+    border-radius:1.5rem;
+    padding:1rem;
+    background:var(--panel);
+    box-shadow:0 10px 26px rgba(0,0,0,.06);
+    display:flex;
+    gap:1.5rem;
+    align-items:center;
+    position:relative;
+    transition:transform .2s ease, box-shadow .2s ease;
+}
+.product-list-item:hover{
+    transform:translateY(-6px);
+    box-shadow:0 16px 32px rgba(0,0,0,.08);
+}
+.product-list-thumb{
+    flex:0 0 280px;
+    height:220px;
+    border-radius:1.25rem;
+    overflow:hidden;
+    background:#f6f3ee;
+}
+.product-list-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.product-list-info{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:1rem;
+    width:100%;
+}
+.product-list-info .price{
+    font-size:1.4rem;
+}
+.product-list-info .favorite-toggle{
+    width:38px;
+    height:38px;
+    box-shadow:none;
+}
+
+.order-detail-page{
+    background:linear-gradient(180deg,rgba(248,245,239,.7) 0,rgba(248,245,239,1) 40%);
+}
+.order-detail-page .container{
+    max-width:1100px;
+    margin:0 auto;
+}
+.order-header h1{ letter-spacing:.35rem; }
+.status-badge{
+    display:inline-block;
+    padding:.4rem 1.2rem;
+    border-radius:999px;
+    text-transform:uppercase;
+    letter-spacing:.2em;
+    font-size:.75rem;
+    background:#f1ede5;
+    color:var(--ink);
+}
+.order-info-grid .info-card{
+    border:1px solid #efe3d1;
+    border-radius:1.25rem;
+    padding:1.1rem;
+    background:var(--panel);
+    box-shadow:0 8px 20px rgba(0,0,0,.04);
+    height:100%;
+}
+
+.order-item-thumb{
+    width:110px;
+    height:110px;
+    border-radius:1rem;
+    overflow:hidden;
+    background:#f6f3ee;
+    flex-shrink:0;
+}
+.order-item-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.order-item-thumb{
+    width:110px;
+    height:110px;
+    border-radius:1rem;
+    overflow:hidden;
+    background:#f6f3ee;
+    flex-shrink:0;
+}
+.order-item-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.sky-band{ height:120px; background:var(--cream); }
+
+@media (max-width:992px){
+    .hero-video{ min-height:60vh; }
+    .navbar .nav-link{ margin:.25rem 0; }
+    .catalog-thumb{ width:100%; height:200px; margin-right:0; margin-bottom:1rem; }
+    .product-list-item{ flex-direction:column; }
+    .product-list-thumb{ width:100%; }
+}
+
+.site-main{min-height:60vh;}
+.hero-video {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    min-height: 90vh;
+    overflow: hidden;
+}
+
+.hero-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+body,html{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+}
+/* Сетка карточек */
+.order-items-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ОДНА карточка товара */
+.order-item-card {
+    display: grid;
+    grid-template-columns: 120px 1fr 150px;
+    gap: 20px;
+    padding: 20px;
+    background: var(--panel);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    align-items: center;
+}
+
+/* Картинка */
+.order-item-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.order-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Информация */
+.order-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.item-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.item-meta,
+.item-qty {
+    color: #6d645c;
+    font-size: 0.9rem;
+}
+
+/* Цены */
+.order-item-price {
+    text-align: right;
+}
+
+.item-price {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.item-total {
+    font-size: 0.9rem;
+    color: #6d645c;
+}
+
+.hotkey-helper{
+    position:fixed;
+    bottom:1.5rem;
+    right:1.5rem;
+    z-index:1200;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:.85rem;
+}
+
+.summary-panel{
+    border:none;
+    border-radius:1.1rem;
+    background:var(--panel);
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+}
+.chart-panel{
+    border:none;
+    border-radius:1.1rem;
+    background:var(--panel);
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+.hotkey-help-btn{
+    border:none;
+    border-radius:999px;
+    background:var(--ink);
+    color:var(--panel);
+    padding:.55rem 1.35rem;
+    font-size:.82rem;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    display:flex;
+    gap:.5rem;
+    align-items:center;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+}
+.hotkey-help-btn:hover,
+.hotkey-help-btn:focus{
+    background:var(--accent);
+    color:var(--accent-text);
+}
+.hotkey-help-icon{
+    font-size:1rem;
+    line-height:1;
+}
+.hotkey-panel{
+    width:min(360px,calc(100vw - 2rem));
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:1.25rem;
+    padding:1.5rem;
+    box-shadow:var(--shadow);
+    color:var(--ink);
+    display:none;
+}
+.hotkey-panel[hidden]{
+    display:none;
+}
+.hotkey-helper.is-open .hotkey-panel{
+    display:block;
+    animation:hotkeyFade .2s ease-out;
+}
+.hotkey-panel-header{
+    display:flex;
+    justify-content:space-between;
+    gap:1rem;
+    align-items:flex-start;
+    margin-bottom:.75rem;
+}
+.hotkey-panel-eyebrow{
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--muted);
+    margin-bottom:.25rem;
+}
+.hotkey-panel-title{
+    font-family:'Cinzel',serif;
+    font-size:1.5rem;
+    letter-spacing:.12em;
+    margin:0;
+}
+.hotkey-panel-description,
+.hotkey-panel-note{
+    font-size:.95rem;
+    color:var(--muted);
+    margin-bottom:1rem;
+}
+.hotkey-panel-note{
+    font-size:.85rem;
+    margin-bottom:0;
+}
+.hotkey-close-btn{
+    width:36px;
+    height:36px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:var(--ink);
+    font-size:1.2rem;
+    line-height:1;
+    cursor:pointer;
+}
+.hotkey-close-btn:hover,
+.hotkey-close-btn:focus{
+    border-color:var(--ink);
+}
+.hotkey-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:.65rem;
+}
+.hotkey-list-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:.75rem;
+}
+.hotkey-badge{
+    font-weight:600;
+    letter-spacing:.12em;
+    font-size:.82rem;
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:.25rem .75rem;
+    background:var(--cream);
+    color:var(--ink);
+    white-space:nowrap;
+}
+.dark .hotkey-badge{
+    background:rgba(255,255,255,.06);
+    border-color:rgba(255,255,255,.25);
+}
+.hotkey-label{
+    flex:1;
+    text-align:right;
+    color:var(--muted);
+    font-size:.9rem;
+}
+.hotkey-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.2);
+    backdrop-filter:none;
+    border-radius:0;
+}
+.hotkey-backdrop[hidden]{
+    display:none;
+}
+@keyframes hotkeyFade{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+/* =================================================== */
+/* АДАПТИВНЫЙ ИНТЕРФЕЙС (RESPONSIVE DESIGN) */
+/* =================================================== */
+
+/* СМАРТФОН: 320px - 767px (Портретная ориентация) */
+@media (max-width: 767px) {
+    /* Основной макет */
+    body {
+        font-size: 14px;
+    }
+    
+    .container, .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Заголовки */
+    h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
+    h2 { font-size: clamp(1.25rem, 4vw, 1.75rem); }
+    h3 { font-size: clamp(1.1rem, 3vw, 1.5rem); }
+    h4, h5, h6 { font-size: 1rem; }
+
+    /* Логотип */
+    .brand-logo { font-size: 1.75rem; letter-spacing: 0.5rem; }
+    .lux-logo { font-size: 0.95rem; letter-spacing: 0.2rem; }
+
+    /* Навигация */
+    .navbar { flex-direction: column; }
+    .navbar .nav-link { font-size: 0.75rem; margin: 0.5rem 0; }
+    .navbar-expand-lg .navbar-collapse { 
+        position: absolute; 
+        top: 100%; 
+        left: 0; 
+        right: 0; 
+        background: var(--panel);
+        border-bottom: 1px solid var(--border);
+        z-index: 1050;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    /* Мега-меню - скрыть на мобильных */
+    .mega-menu { 
+        min-width: 100vw;
+        border-radius: 0;
+    }
+    .mega-menu .menu-columns { 
+        column-count: 1; 
+        column-gap: 1rem;
+    }
+
+    /* Товары */
+    .catalog-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .catalog-grid .product-card { 
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Горизонтальный список товаров */
+    .product-list-item { 
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .product-list-thumb { 
+        width: 100%;
+        height: 180px;
+        flex: none;
+    }
+
+    .product-list-info {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .product-list-info .price {
+        font-size: 1.1rem;
+        order: -1;
+    }
+
+    /* Корзина */
+    .cart-card {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .cart-media {
+        margin-bottom: 0.75rem;
+    }
+
+    .cart-media img {
+        max-height: 100px;
+    }
+
+    .qty-control {
+        gap: 0.25rem;
+    }
+
+    .qty-control button {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    /* Заказы */
+    .order-item-card {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .order-item-img {
+        width: 100%;
+        height: 160px;
+    }
+
+    .order-item-price {
+        text-align: left;
+    }
+
+    /* Таблицы */
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .table th, .table td {
+        padding: 0.5rem;
+    }
+
+    /* Кнопки */
+    .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-gold {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.75rem;
+    }
+
+    /* Хоткеи */
+    .hotkey-helper {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .hotkey-help-btn span:last-child {
+        display: none;
+    }
+
+    .hotkey-panel {
+        width: min(320px, calc(100vw - 1.5rem));
+    }
+
+    /* Геро секция */
+    .hero-overlay h1 { 
+        font-size: 1.75rem;
+        letter-spacing: 0.3rem;
+    }
+
+    .hero-overlay p {
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    /* Картинки - оптимизировать */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Видео */
+    .hero-video {
+        min-height: 50vh;
+        width: 100vw;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Текстовые поля - полная ширина */
+    .form-control, .form-select, input, textarea, select {
+        width: 100%;
+        font-size: 16px; /* Предотвращает зум на iOS */
+    }
+
+    /* Модальные окна */
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100vw - 1rem);
+    }
+
+    .modal-header {
+        padding: 0.75rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    /* Отступы и промежутки */
+    .mt-5 { margin-top: 1rem !important; }
+    .mb-5 { margin-bottom: 1rem !important; }
+    .p-5 { padding: 1rem !important; }
+}
+
+/* ПЛАНШЕТ: 768px - 1023px (Ландшафтная ориентация) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Основной макет */
+    body {
+        font-size: 15px;
+    }
+
+    .container {
+        max-width: 720px;
+    }
+
+    /* Заголовки */
+    h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); }
+    h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+
+    /* Логотип */
+    .brand-logo { font-size: 2.25rem; letter-spacing: 0.7rem; }
+
+    /* Навигация - горизонтальная на планшете */
+    .navbar {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .navbar .nav-link {
+        font-size: 0.8rem;
+        margin: 0.25rem 0.5rem;
+    }
+
+    .mega-menu {
+        min-width: 90vw;
+    }
+
+    .mega-menu .menu-columns {
+        column-count: 2;
+    }
+
+    /* Товары - 2 в ряду */
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+
+    .catalog-grid .product-card {
+        max-width: 100%;
+    }
+
+    /* Горизонтальный список товаров */
+    .product-list-item {
+        flex-direction: row;
+        gap: 1.25rem;
+    }
+
+    .product-list-thumb {
+        width: 240px;
+        height: 180px;
+        flex: 0 0 240px;
+    }
+
+    /* Корзина */
+    .cart-card {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    /* Заказы */
+    .order-item-card {
+        grid-template-columns: 100px 1fr 120px;
+        gap: 1.25rem;
+    }
+
+    .order-item-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Таблицы */
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table th, .table td {
+        padding: 0.75rem;
+    }
+
+    /* Кнопки */
+    .btn {
+        padding: 0.45rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    /* Геро */
+    .hero-overlay h1 {
+        font-size: 2.5rem;
+        letter-spacing: 0.4rem;
+    }
+
+    .hero-video {
+        min-height: 70vh;
+    }
+
+    /* Форма */
+    .form-control, .form-select {
+        font-size: 15px;
+    }
+
+    /* Хоткеи */
+    .hotkey-panel {
+        width: min(360px, calc(100vw - 2rem));
+    }
+}
+
+/* ДЕСКТОП: 1024px и выше */
+@media (min-width: 1024px) {
+    /* Основной макет */
+    body {
+        font-size: 16px;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    /* Заголовки */
+    h1 { font-size: clamp(2.5rem, 6vw, 3.5rem); }
+    h2 { font-size: clamp(2rem, 5vw, 2.75rem); }
+
+    /* Логотип */
+    .brand-logo { font-size: 3rem; letter-spacing: 1rem; }
+
+    /* Навигация - полная горизонтальная */
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .navbar .nav-link {
+        font-size: 0.85rem;
+        margin: 0;
+    }
+
+    .mega-menu {
+        min-width: 70vw;
+    }
+
+    .mega-menu .menu-columns {
+        column-count: 3;
+        column-gap: 3rem;
+    }
+
+    /* Товары - 4 в ряду */
+    .catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .catalog-grid .product-card {
+        max-width: 100%;
+    }
+
+    /* Горизонтальный список товаров */
+    .product-list-item {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+
+    .product-list-thumb {
+        width: 280px;
+        height: 220px;
+        flex: 0 0 280px;
+    }
+
+    /* Корзина - 3 в ряду или табличный вид */
+    .cart-card {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    /* Заказы */
+    .order-item-card {
+        grid-template-columns: 110px 1fr 150px;
+        gap: 1.5rem;
+    }
+
+    .order-item-img {
+        width: 110px;
+        height: 110px;
+    }
+
+    /* Таблицы */
+    .table {
+        font-size: 0.95rem;
+    }
+
+    .table th, .table td {
+        padding: 1rem;
+    }
+
+    /* Кнопки */
+    .btn {
+        padding: 0.65rem 1.75rem;
+        font-size: 0.82rem;
+    }
+
+    /* Геро */
+    .hero-overlay h1 {
+        font-size: 3.5rem;
+        letter-spacing: 0.6rem;
+    }
+
+    .hero-video {
+        min-height: 90vh;
+    }
+
+    /* Хоткеи */
+    .hotkey-helper {
+        right: 1.5rem;
+        bottom: 1.5rem;
+    }
+
+    .hotkey-help-btn span:last-child {
+        display: inline;
+    }
+
+    .hotkey-panel {
+        width: 360px;
+    }
+}
+
+/* =================================================== */
+/* Дополнительные утилиты для адаптивности */
+/* =================================================== */
+
+/* Скрывать элементы по размеру экрана */
+.hide-mobile { display: none; }
+.hide-tablet { display: block; }
+.hide-desktop { display: block; }
+
+@media (min-width: 768px) {
+    .hide-mobile { display: block; }
+    .hide-tablet { display: none; }
+}
+
+@media (min-width: 1024px) {
+    .hide-tablet { display: block; }
+    .hide-desktop { display: none; }
+}
+
+/* Гибкие изображения */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Гибкие видео и iframe */
+iframe, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Блоки с фиксированным соотношением сторон */
+.aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+/* Flex-утилиты для адаптивности */
+@media (max-width: 767px) {
+    .flex-reverse-mobile {
+        flex-direction: column-reverse;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .flex-wrap-tablet {
+        flex-wrap: wrap;
+    }
+}
+
+@media (min-width: 1024px) {
+    .flex-nowrap-desktop {
+        flex-wrap: nowrap;
+    }
+}
+
+/* =================================================== */
+/* ТЕМНАЯ ТЕМА - СПЕЦИАЛЬНЫЕ СТИЛИ */
+/* =================================================== */
+
+.dark .form-control,
+.dark .form-select {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .form-control:focus,
+.dark .form-select:focus {
+    background-color: var(--panel-soft);
+    border-color: var(--accent);
+    color: var(--ink);
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 106, 0.25);
+}
+
+.dark .form-control::placeholder {
+    color: var(--muted);
+}
+
+.dark .form-label {
+    color: var(--ink);
+}
+
+.dark .card {
+    background-color: var(--panel) !important;
+    border-color: var(--border) !important;
+    color: var(--ink) !important;
+}
+
+.dark .card * {
+    color: var(--ink) !important;
+}
+
+.dark .card-body {
+    background-color: var(--panel) !important;
+    color: var(--ink) !important;
+}
+
+.dark .card-body * {
+    color: var(--ink) !important;
+}
+
+.dark .card-title {
+    color: var(--ink) !important;
+}
+
+.dark .card-text {
+    color: var(--muted) !important;
+}
+
+.dark .bg-cream,
+.dark .bg-light,
+.dark [class*="bg-light"] {
+    background-color: var(--cream) !important;
+    color: var(--ink) !important;
+}
+
+.dark .btn-outline-secondary {
+    color: var(--muted);
+    border-color: var(--border);
+}
+
+.dark .btn-outline-secondary:hover,
+.dark .btn-outline-secondary:focus {
+    background-color: var(--cream);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.dark .btn-outline-dark {
+    color: var(--ink);
+    border-color: var(--border);
+}
+
+.dark .btn-outline-dark:hover,
+.dark .btn-outline-dark:focus {
+    background-color: var(--cream);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.dark .btn-gold {
+    background: var(--accent);
+    color: var(--accent-text);
+}
+
+.dark .btn-gold:hover {
+    background: var(--accent-dark);
+    color: var(--accent-text);
+}
+
+.dark .table {
+    color: var(--ink);
+    border-color: var(--border);
+}
+
+.dark .table th,
+.dark .table td {
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgba(212, 175, 106, 0.05);
+}
+
+.dark .text-muted {
+    color: var(--muted) !important;
+}
+
+.dark .alert {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .alert-info {
+    background-color: rgba(212, 175, 106, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.dark .alert-warning {
+    background-color: rgba(212, 175, 106, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.dark .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-color: #dc3545;
+    color: #ff7a82;
+}
+
+.dark .alert-success {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-color: #28a745;
+    color: #5cb85f;
+}
+
+.dark .badge {
+    background-color: var(--accent);
+    color: var(--accent-text);
+}
+
+.dark .badge.bg-accent {
+    background-color: var(--accent) !important;
+    color: var(--accent-text) !important;
+}
+
+.dark .list-group-item {
+    background-color: var(--panel);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .list-group-item:hover {
+    background-color: var(--cream);
+}
+
+.dark .product-card {
+    background-color: var(--panel);
+    border-color: var(--border);
+}
+
+.dark .product-card:hover {
+    background-color: var(--panel-soft);
+}
+
+.dark .filter-panel .form-control,
+.dark .filter-panel .form-select {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .hero-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,.3) 70%, transparent 100%);
+}
+
+.dark input[type="checkbox"],
+.dark input[type="radio"] {
+    accent-color: var(--accent);
+}
+
+.dark .modal-content {
+    background-color: var(--panel);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .modal-header {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .modal-body {
+    background-color: var(--panel);
+    color: var(--ink);
+}
+
+.dark .modal-footer {
+    background-color: var(--cream);
+    border-color: var(--border);
+}
+
+.dark .close,
+.dark .btn-close {
+    color: var(--ink);
+    filter: brightness(1.2);
+}
+
+.dark .nav-tabs {
+    border-color: var(--border);
+}
+
+.dark .nav-tabs .nav-link {
+    color: var(--muted);
+}
+
+.dark .nav-tabs .nav-link:hover,
+.dark .nav-tabs .nav-link.active {
+    border-color: var(--border);
+    color: var(--accent);
+}
+
+.dark .pagination .page-link {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--muted);
+}
+
+.dark .pagination .page-link:hover {
+    background-color: var(--panel-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.dark .pagination .page-item.active .page-link {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+
+/* Дополнительные элементы для темной темы */
+.dark .text-dark {
+    color: var(--ink) !important;
+}
+
+.dark .text-secondary {
+    color: var(--muted) !important;
+}
+
+.dark .text-body {
+    color: var(--ink) !important;
+}
+
+.dark .text-black {
+    color: var(--ink) !important;
+}
+
+.dark .fw-bold,
+.dark .font-weight-bold,
+.dark strong,
+.dark b {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.dark .navbar-brand {
+    color: var(--accent) !important;
+}
+
+.dark .dropdown-menu {
+    background-color: var(--panel);
+    border-color: var(--border);
+}
+
+.dark .dropdown-item {
+    color: var(--ink);
+}
+
+.dark .dropdown-item:hover,
+.dark .dropdown-item:focus {
+    background-color: var(--cream);
+    color: var(--accent);
+}
+
+.dark .dropdown-divider {
+    border-color: var(--border);
+}
+
+.dark .breadcrumb {
+    background-color: transparent;
+}
+
+.dark .breadcrumb-item {
+    color: var(--muted);
+}
+
+.dark .breadcrumb-item.active {
+    color: var(--ink);
+}
+
+.dark .breadcrumb-item a {
+    color: var(--accent);
+}
+
+.dark .breadcrumb-item a:hover {
+    color: var(--accent-dark);
+}
+
+.dark .input-group-text {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .form-floating > label {
+    color: var(--ink);
+}
+
+.dark .form-floating > .form-control:focus ~ label,
+.dark .form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--ink);
+}
+
+.dark .form-check-input {
+    background-color: var(--cream);
+    border-color: var(--border);
+}
+
+.dark .form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.dark .form-check-label {
+    color: var(--ink);
+}
+
+.dark .form-range .form-range-track {
+    background-color: var(--border);
+}
+
+.dark .form-range .form-range-thumb {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.dark .form-range .form-range-thumb:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.25rem rgba(212, 175, 106, 0.25);
+}
+
+.dark .spinner-border {
+    color: var(--accent);
+}
+
+.dark .spinner-grow {
+    background-color: var(--accent);
+}
+
+.dark .progress {
+    background-color: var(--cream);
+}
+
+.dark .progress-bar {
+    background-color: var(--accent);
+}
+
+.dark .offcanvas {
+    background-color: var(--panel);
+    color: var(--ink);
+}
+
+.dark .offcanvas-header {
+    background-color: var(--cream);
+    border-color: var(--border);
+}
+
+.dark .offcanvas-title {
+    color: var(--ink);
+}
+
+.dark .btn-close {
+    color: var(--ink);
+}
+
+.dark .nav-pills .nav-link {
+    color: var(--muted);
+}
+
+.dark .nav-pills .nav-link:hover {
+    background-color: var(--cream);
+    color: var(--accent);
+}
+
+.dark .nav-pills .nav-link.active,
+.dark .nav-pills .show > .nav-link {
+    background-color: var(--accent);
+    color: var(--accent-text);
+}
+
+.dark .carousel-caption {
+    color: var(--ink);
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.7) 100%);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.5);
+}
+
+.dark .carousel-control-prev-icon,
+.dark .carousel-control-next-icon {
+    background-color: rgba(212, 175, 106, 0.5);
+    border-radius: 50%;
+}
+
+.dark .carousel-control-prev:hover .carousel-control-prev-icon,
+.dark .carousel-control-next:hover .carousel-control-next-icon {
+    background-color: var(--accent);
+}
+
+.dark .toast {
+    background-color: var(--panel);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .toast-header {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .btn-group-vertical > .btn {
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .btn-group-vertical > .btn:hover {
+    background-color: var(--cream);
+    color: var(--accent);
+}
+
+.dark .btn-group-vertical > .btn.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+
+.dark .popover {
+    background-color: var(--panel);
+    border-color: var(--border);
+}
+
+.dark .popover-header {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark .popover-body {
+    color: var(--ink);
+}
+
+.dark .popover-arrow::before {
+    border-right-color: var(--border);
+}
+
+.dark .tooltip-inner {
+    background-color: var(--cream);
+    color: var(--ink);
+    box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+.dark .bs-tooltip-top .tooltip-arrow::before,
+.dark .bs-tooltip-bottom .tooltip-arrow::before,
+.dark .bs-tooltip-start .tooltip-arrow::before,
+.dark .bs-tooltip-end .tooltip-arrow::before {
+    border-color: var(--cream);
+}
+
+/* Переопределение для видимости во всех ситуациях */
+.dark .text-info {
+    color: #5bc0de !important;
+}
+
+.dark .text-success {
+    color: #5cb85f !important;
+}
+
+.dark .text-warning {
+    color: var(--accent) !important;
+}
+
+.dark .text-danger {
+    color: #ff7a82 !important;
+}
+
+.dark .text-light {
+    color: var(--ink) !important;
+}
+
+.dark .small,
+.dark .text-sm {
+    color: var(--muted);
+}
+
+.dark .lead {
+    color: var(--ink);
+}
+
+.dark .blockquote {
+    color: var(--ink);
+    border-color: var(--accent);
+}
+
+.dark .blockquote-footer {
+    color: var(--muted);
+}
+
+.dark code {
+    color: var(--accent);
+    background-color: var(--cream);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+}
+
+.dark pre {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark pre code {
+    color: var(--accent);
+    background-color: transparent;
+    padding: 0;
+}
+
+.dark mark {
+    background-color: rgba(212, 175, 106, 0.3);
+    color: var(--ink);
+}
+
+.dark kbd {
+    background-color: var(--cream);
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.dark abbr[title] {
+    color: var(--ink);
+    border-color: var(--accent);
+}
+
+/* Специфичные стили для ссылок и навигации */
+.dark .nav-link.disabled {
+    color: var(--muted) !important;
+    opacity: 0.5;
+}
+
+.dark .page-link.disabled {
+    color: var(--muted);
+    background-color: var(--cream);
+    border-color: var(--border);
+}
+
+/* Для светлых фонов (ошибки, предупреждения) */
+.dark .btn-light {
+    background-color: var(--cream);
+    color: var(--ink);
+    border-color: var(--border);
+}
+
+.dark .btn-light:hover {
+    background-color: var(--panel-soft);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Переопределение Bootstrap цветов */
+.dark .bg-light {
+    background-color: var(--cream) !important;
+}
+
+.dark .bg-dark {
+    background-color: var(--panel) !important;
+}
+
+.dark .bg-info {
+    background-color: rgba(91, 192, 222, 0.1) !important;
+}
+
+.dark .bg-success {
+    background-color: rgba(92, 184, 95, 0.1) !important;
+}
+
+.dark .bg-warning {
+    background-color: rgba(212, 175, 106, 0.1) !important;
+}
+
+.dark .bg-danger {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Для таблиц */
+.dark .table-light {
+    background-color: var(--cream);
+    color: var(--ink);
+}
+
+.dark .table-dark {
+    background-color: var(--panel);
+    color: var(--ink);
+}
+
+.dark .table-hover tbody tr:hover {
+    background-color: rgba(212, 175, 106, 0.1);
+    color: var(--ink);
+}
+
+/* Для бейджей */
+.dark .badge.bg-light {
+    background-color: var(--cream) !important;
+    color: var(--ink);
+}
+
+.dark .badge.bg-dark {
+    background-color: var(--panel) !important;
+    color: var(--ink);
+}
+
+.dark .badge.bg-info {
+    background-color: #5bc0de !important;
+    color: #000;
+}
+
+.dark .badge.bg-success {
+    background-color: #5cb85f !important;
+    color: #000;
+}
+
+.dark .badge.bg-warning {
+    background-color: var(--accent) !important;
+    color: var(--accent-text);
+}
+
+.dark .badge.bg-danger {
+    background-color: #dc3545 !important;
+    color: #fff;
+}
+
+/* Специальный класс для гарантированной видимости текста */
+.dark .text-visible {
+    color: var(--ink) !important;
+}
+
+/* Переключатели темы и языка */
+.nav-item.dropdown .nav-link {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-item.dropdown .nav-link:hover {
+    color: var(--accent);
+}
+
+.dark .nav-item.dropdown .nav-link:hover {
+    color: var(--accent);
+}
+
+.nav-item.dropdown .dropdown-menu {
+    background-color: var(--panel);
+    border: 1px solid var(--border);
+}
+
+.dark .nav-item.dropdown .dropdown-menu {
+    background-color: var(--panel);
+    border-color: var(--border);
+}
+
+.nav-item.dropdown .dropdown-item {
+    color: var(--ink);
+}
+
+.dark .nav-item.dropdown .dropdown-item {
+    color: var(--ink);
+}
+
+.nav-item.dropdown .dropdown-item:hover {
+    background-color: var(--cream);
+    color: var(--accent);
+}
+
+.dark .nav-item.dropdown .dropdown-item:hover {
+    background-color: var(--cream);
+    color: var(--accent);
+}
+
+/* Принудительная видимость SVG иконок */
+.dark svg {
+    color: var(--ink);
+    fill: currentColor;
+}
+
+.dark svg text,
+.dark svg tspan {
+    fill: var(--ink);
+}
+
+/* Иконки FontAwesome и другие */
+.dark [class*="fa-"],
+.dark [class*="icon-"] {
+    color: var(--ink);
+}
+
+/* Инпуты и формы */
+.dark .form-control,
+.dark .form-select,
+.dark input,
+.dark textarea,
+.dark select {
+    background-color: var(--cream) !important;
+    border-color: var(--border) !important;
+    color: var(--ink) !important;
+}
+
+.dark .form-control::placeholder,
+.dark input::placeholder {
+    color: var(--muted) !important;
+}
+
+/* Специальные элементы */
+.dark .badge {
+    background-color: var(--accent) !important;
+    color: var(--accent-text) !important;
+}
+
+.dark .badge * {
+    color: var(--accent-text) !important;
+}
+
+.dark button,
+.dark [role="button"],
+.dark .btn {
+    background-color: inherit;
+    color: var(--ink) !important;
+}
+
+.dark .btn-gold,
+.dark [class*="btn-gold"] {
+    background-color: var(--accent) !important;
+    color: var(--accent-text) !important;
+}
+
+.dark .btn-gold *,
+.dark [class*="btn-gold"] * {
+    color: var(--accent-text) !important;
+}
+
+.dark .btn-outline-dark {
+    color: var(--ink) !important;
+    border-color: var(--border) !important;
+}
+
+.dark .btn-outline-dark:hover {
+    background-color: var(--cream) !important;
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+}
+
+/* Переопределение для всех текстовых элементов */
+.dark span,
+.dark div,
+.dark section,
+.dark article,
+.dark nav,
+.dark header,
+.dark footer {
+    color: inherit;
+}
+
+/* Дополнительный фиксер для белого текста */
+.dark .text-white,
+.dark .text-light,
+.dark [style*="color: white"],
+.dark [style*="color:white"],
+.dark [style*="color:#fff"],
+.dark [style*="color:#ffffff"] {
+    color: var(--ink) !important;
+}
+
+/* Переопределение inline стилей для светлых фонов */
+.dark section[style*="background"],
+.dark div[style*="background"],
+.dark [style*="background-color: #f"],
+.dark [style*="background:#f"] {
+    background: var(--panel) !important;
+    color: var(--ink) !important;
+}
+
+.dark section[style*="gradient"] {
+    background: linear-gradient(135deg, var(--panel), var(--cream)) !important;
+    color: var(--ink) !important;
+}
+
+/* Специфичные переопределения для светлого текста */
+.dark [style*="color: #"],
+.dark .text-dark[style] {
+    color: var(--ink) !important;
+}
+
+/* Переопределение для светлых бордюров и фонов */
+.dark [style*="border-color: #e"],
+.dark [style*="border-color:#e"],
+.dark [style*="background-color: #f"],
+.dark [style*="background:#f"] {
+    border-color: var(--border) !important;
+    background-color: var(--panel) !important;
+}
+
+/* Переопределение для всех элементов с фиксированными светлыми цветами */
+.dark [style*="border-color: #"],
+.dark [style*="border-color:#"] {
+    border-color: var(--border) !important;
+}
+
+/* Для кнопок */
+.dark .btn-outline-secondary {
+    color: var(--ink) !important;
+    border-color: var(--border) !important;
+}
+
+.dark .btn-outline-secondary:hover,
+.dark .btn-outline-secondary:focus {
+    background-color: var(--cream) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+}
+
+/* Emoji и иконки */
+.dark button::before,
+.dark button::after,
+.dark [role="button"]::before,
+.dark [role="button"]::after {
+    color: inherit;
+}
+
+/* Полный фиксер для всех светлых фонов */
+.dark .rounded-circle[style*="background"] {
+    background: var(--cream) !important;
+    color: var(--ink) !important;
+}
+
+.dark .rounded-circle[style*="color"] {
+    color: var(--accent) !important;
+}
+
+/* Для всех контейнеров с border и светлым цветом */
+.dark [style*="border: 1px"] {
+    border-color: var(--border) !important;
+}
+
+.dark [style*="border-color: #eee"],
+.dark [style*="border-color:#eee"] {
+    border-color: var(--border) !important;
+}
+
+/* Для элементов с font-weight и цветом */
+.dark [style*="color: #bfa"] {
+    color: var(--accent) !important;
+}
+
+/* ========================= */
+/* ГЛОБАЛЬНОЕ ПЕРЕОПРЕДЕЛЕНИЕ */
+/* ========================= */
+
+.dark {
+    --bs-body-color: var(--ink) !important;
+    --bs-body-bg: var(--bg) !important;
+    --bs-border-color: var(--border) !important;
+    --bs-secondary-bg: var(--panel) !important;
+}
+
+/* Все текстовые элементы должны быть видны */
+.dark :not(svg) {
+    color: inherit;
+}
+
+/* Специальное правило для кнопок с иконками */
+.dark .btn::before,
+.dark .btn::after {
+    filter: none;
+}
+
+/* Bootstrap компоненты */
+.dark .btn-group,
+.dark .btn-toolbar {
+    --bs-btn-color: var(--ink);
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: var(--border);
+}
+
+.dark .btn-primary {
+    --bs-btn-color: var(--accent-text);
+    --bs-btn-bg: var(--accent);
+    --bs-btn-border-color: var(--accent);
+}
+
+.dark .form-control,
+.dark .form-select {
+    --bs-form-control-bg: var(--cream);
+    --bs-form-control-color: var(--ink);
+    --bs-form-control-border-color: var(--border);
+}
+
+.dark .nav,
+.dark .navbar {
+    --bs-nav-link-color: var(--muted);
+    --bs-nav-link-hover-color: var(--accent);
+}
+
+/* Для любых светлых бордюров превратить в темные */
+.dark [style*="#efe"],
+.dark [style*="#eee"],
+.dark [style*="#f0f"],
+.dark [style*="#f5f"],
+.dark [style*="#faf"],
+.dark [style*="#fbf"] {
+    border-color: var(--border) !important;
+    background-color: var(--panel) !important;
+}
+
+/* Максимально агрессивное правило - если у элемента есть текстовое содержимое, оно должно быть видно */
+.dark [style*="color"] {
+    color: var(--ink) !important;
+}
+
+/* Переопределение для светлых цветов в стилях */
+.dark [style*="color: #1"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #2"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #3"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #4"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #5"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #6"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #7"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #8"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #9"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #a"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #b"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #c"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #d"] {
+    color: var(--accent) !important;
+}
+
+.dark [style*="color: #e"] {
+    color: var(--muted) !important;
+}
+
+.dark [style*="color: #f"] {
+    color: var(--muted) !important;
+}
+
+

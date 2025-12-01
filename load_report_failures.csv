@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+PATCH,PATCH /api/shop-products/{id}/,HTTPError('401 Client Error: Unauthorized for url: PATCH /api/shop-products/{id}/'),783
+POST,POST /api/carts/,HTTPError('401 Client Error: Unauthorized for url: POST /api/carts/'),504
+GET,GET /api/shop-products/,HTTPError('401 Client Error: Unauthorized for url: GET /api/shop-products/'),456

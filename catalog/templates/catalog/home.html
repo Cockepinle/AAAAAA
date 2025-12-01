@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}LUMENOVA — ювелирный дом{% endblock %}
+
+{% block content %}
+<section class="hero-video">
+  <video autoplay loop muted playsinline>
+    <source src="{% static 'media/hero.mp4' %}" type="video/mp4">
+  </video>
+  <div class="hero-overlay">
+    <p class="hero-eyebrow">новая грань сияния</p>
+    <h1>LUMENOVA</h1>
+    <p>ювелирный дом, вдохновленный архитектурой света</p>
+    <a href="{% url 'catalog' %}" class="btn btn-gold">перейти в каталог</a>
+  </div>
+</section>
+
+<section class="catalog-intro">
+  <h2>дом световых отражений</h2>
+  <p>Создаём украшения, которые напоминают об изяществе кристаллов. Картины света, воплощённые в кольцах, серьгах и браслетах ручной работы.</p>
+  <div class="home-tags">
+    {% for cat in categories %}
+      <a href="{% url 'catalog' %}?category={{ cat.id }}" class="tag-pill">{{ cat.name_category }}</a>
+    {% empty %}
+      <span class="tag-pill muted">Категории появятся позже</span>
+    {% endfor %}
+    <a href="{% url 'catalog' %}?category=all" class="tag-pill">Все категории</a>
+  </div>
+</section>
+
+<section class="catalog-panel">
+  <div class="catalog-header">
+    <h3>Избранные позиции</h3>
+    <p>Подборка украшений для главной — без фильтров и поиска, только вдохновение.</p>
+  </div>
+  <div class="catalog-grid">
+    {% for product in products %}
+    <article class="catalog-card">
+      <button class="favorite-toggle" data-product-id="{{ product.id }}" aria-label="Добавить в избранное">
+        <svg class="heart" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c9b38f" stroke-width="1.4">
+          <path d="M12 21s-6.6-4.2-9.2-7.1C-0.4 10.8 1.2 6.8 4.7 6.8c1.9 0 3.2 1.1 3.9 2.2.7-1.1 2-2.2 3.9-2.2 3.5 0 5.1 4 2 7.1C18.6 16.8 12 21 12 21z" fill="{% if product.id in favorite_ids %}#c9b38f{% else %}none{% endif %}"/>
+        </svg>
+      </button>
+      {% with product.images.all.0 as thumb %}
+      <figure>
+        {% if thumb %}
+          <img src="{{ thumb.image_url }}" alt="{{ product.product.name_product }}">
+        {% else %}
+          <img src="{% static 'images/placeholder.svg' %}" alt="нет изображения">
+        {% endif %}
+      </figure>
+      {% endwith %}
+      <h5>{{ product.product.name_product }}</h5>
+      <div class="material">{{ product.material.material_name }}</div>
+      <div class="price">{{ product.price }} ₽</div>
+      <a href="/product/{{ product.id }}/" class="catalog-link">
+        Детали
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </article>
+    {% empty %}
+    <div class="catalog-empty">Пока нет товаров для превью. Загляните позже.</div>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-4">
+    <a href="{% url 'catalog' %}" class="btn btn-gold">Открыть каталог полностью</a>
+  </div>
+</section>
+
+<div class="sky-band"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function getCSRF(){
+    const el = document.getElementById('csrf-token');
+    if (el && el.value) return el.value;
+    const match = (`; ${document.cookie}`).split(`; csrftoken=`);
+    if (match.length === 2) return match.pop().split(';').shift();
+    return '';
+  }
+
+  document.querySelectorAll('.favorite-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const productId = btn.dataset.productId;
+      fetch(`/favorites/toggle/${productId}/`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'X-CSRFToken': getCSRF() }
+      })
+      .then(res => res.json())
+      .then(data => {
+        const path = btn.querySelector('path');
+        if (path) path.setAttribute('fill', data.added ? '#c9b38f' : 'none');
+      })
+      .catch(() => alert('Не удалось обновить избранное'));
+    });
+  });
+});
+</script>
+{% endblock %}

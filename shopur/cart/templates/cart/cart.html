@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="cart-page py-5">
+  <div class="container">
+    <h1>Товары в корзине</h1>
+
+    {% if items %}
+    <div class="cart-list">
+      {% for item in items %}
+      <article class="cart-card">
+        <!-- Адаптивная сетка: вертикально на мобиле, горизонтально на планшете+ -->
+        <div class="row g-2 g-md-3 align-items-start align-items-md-center">
+          <div class="col-auto">
+            <input type="checkbox" class="form-check-input item-select" data-item-id="{{ item.id }}" checked>
+          </div>
+          <div class="col-12 col-sm-4 col-md-2 text-center cart-media">
+            {% with item.shop_product.images.all.0 as thumb %}
+              {% if thumb %}
+                <img src="{{ thumb.image_url }}" alt="{{ item.shop_product.product.name_product }}" class="img-fluid" loading="lazy">
+              {% else %}
+                <img src="{% static 'images/placeholder.svg' %}" alt="нет изображения" class="img-fluid">
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="col-12 col-sm-8 col-md-auto flex-grow-1">
+            <p class="text-uppercase text-muted small mb-1">{{ item.shop_product.product.category.name_category }}</p>
+            <h5 class="mb-1">{{ item.shop_product.product.name_product }}</h5>
+            <p class="text-muted mb-0 small">Материал: {{ item.shop_product.material.material_name }} • Размер: {{ item.shop_product.size.size_name }}</p>
+          </div>
+          <div class="col-6 col-md-auto text-center fw-semibold fs-5">
+            {{ item.shop_product.price }} ₽
+          </div>
+          <div class="col-12 col-md-auto">
+            <div class="qty-control mb-2 justify-content-center">
+              <button class="btn btn-outline-secondary btn-sm qty-decr" data-item-id="{{ item.id }}">-</button>
+              <input type="number" class="form-control text-center item-qty" data-item-id="{{ item.id }}" data-shop-product-id="{{ item.shop_product.id }}" value="{{ item.quantity }}" min="0" style="width:60px">
+              <button class="btn btn-outline-secondary btn-sm qty-incr" data-item-id="{{ item.id }}">+</button>
+            </div>
+            <div class="d-flex gap-2 justify-content-center">
+              <button class="btn btn-outline-dark btn-sm update-item" data-item-id="{{ item.id }}">Обновить</button>
+              <button class="btn btn-outline-danger btn-sm remove-item" data-item-id="{{ item.id }}">Удалить</button>
+            </div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="cart-summary d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+      <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="select-all" checked>
+          <label class="form-check-label" for="select-all">Выбрать все</label>
+        </div>
+        <div class="total">Итого: {{ total }} ₽</div>
+      </div>
+      <button id="checkout-open" class="btn btn-gold w-100 w-md-auto" type="button" data-bs-toggle="modal" data-bs-target="#checkoutModal">Оформить заказ</button>
+    </div>
+    {% else %}
+      <p>Корзина пока пуста.</p>
+    {% endif %}
+    <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+  </div>
+</section>
+
+{% if items %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    let token = (document.getElementById('csrf-token') || {}).value || '';
+    if (!token) token = getCookie('csrftoken');
+
+    function sendUpdate(itemId, qty){
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['X-CSRFToken'] = token;
+        return fetch(`/cart/update/${itemId}/`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: headers,
+            body: JSON.stringify({ quantity: qty })
+        })
+        .then(r => {
+            if (r.status === 401 || r.status === 403) {
+                alert('Сессия истекла. Пожалуйста, войдите заново.');
+                window.location.href = '/login/?next=' + encodeURIComponent('/cart/');
+                return Promise.reject('not-authenticated');
+            }
+            const ct = r.headers.get('content-type') || '';
+            if (ct.indexOf('application/json') === -1) {
+                return Promise.reject('no-json');
+            }
+            return r.json();
+        })
+        .then(data => {
+            if (data && data.total !== undefined) {
+                document.querySelector('.cart-summary .total').textContent = `Итого: ${data.total} ₽`;
+            }
+        })
+        .catch(() => {});
+    }
+
+    document.querySelectorAll('.qty-incr').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.itemId;
+        const input = document.querySelector(`.item-qty[data-item-id="${id}"]`);
+        if(!input) return;
+        input.value = parseInt(input.value || '0') + 1;
+    }));
+    document.querySelectorAll('.qty-decr').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.itemId;
+        const input = document.querySelector(`.item-qty[data-item-id="${id}"]`);
+        if(!input) return;
+        const next = parseInt(input.value || '0') - 1;
+        input.value = next < 0 ? 0 : next;
+    }));
+
+    document.querySelectorAll('.update-item').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.itemId;
+        const input = document.querySelector(`.item-qty[data-item-id="${id}"]`);
+        if(!input) return;
+        sendUpdate(id, parseInt(input.value || '0'));
+    }));
+
+    document.querySelectorAll('.remove-item').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.dataset.itemId;
+        sendUpdate(id, 0).then(() => window.location.reload());
+    }));
+
+    const selectAll = document.getElementById('select-all');
+    if(selectAll){
+        selectAll.addEventListener('change', () => {
+            document.querySelectorAll('.item-select').forEach(cb => cb.checked = selectAll.checked);
+        });
+    }
+
+    const btn = document.getElementById('checkout-open');
+    btn && btn.addEventListener('click', () => {
+        const anyItem = Array.from(document.querySelectorAll('.item-select')).some(cb => cb.checked);
+        if(!anyItem){
+            alert('Выберите хотя бы один товар.');
+            const modal = bootstrap.Modal.getInstance(document.getElementById('checkoutModal'));
+            modal && modal.hide();
+        }
+    });
+});
+</script>
+{% endif %}
+
+<!-- Checkout modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkoutModalLabel">Подтверждение заказа</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="checkout-form" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Имя</label>
+                        <input type="text" id="order-name" class="form-control" value="{{ request.user.get_full_name|default:request.user.username }}">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Телефон</label>
+                        <input type="tel" id="order-phone" class="form-control" placeholder="+7 (___) ___-__-__">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Пункт самовывоза</label>
+                        <select id="order-shop" class="form-select">
+                            <option value="">Выберите пункт самовывоза</option>
+                            {% for shop in shops %}
+                                <option value="{{ shop.id }}" data-address="{{ shop.address.city }}, {{ shop.address.street }}" data-hours="{{ shop.office_hours }}">{{ shop.name_shop }} — {{ shop.address.city }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="shop-hours" class="form-text mt-1 text-muted">Выберите магазин, чтобы увидеть адрес и график.</div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Способ оплаты</label>
+                        <div class="btn-group w-100 payment-toggle" role="group">
+                            <input type="radio" class="btn-check" name="payment-method" id="pay-card" value="card" checked>
+                            <label class="btn btn-outline-dark" for="pay-card">Картой на сайте</label>
+                            <input type="radio" class="btn-check" name="payment-method" id="pay-pickup" value="pickup">
+                            <label class="btn btn-outline-dark" for="pay-pickup">При получении</label>
+                        </div>
+                    </div>
+                    <div class="col-12 card-fields">
+                        <div class="row g-2">
+                            <div class="col-12">
+                                <label class="form-label">Номер карты</label>
+                                <input type="text" id="card-number" class="form-control" placeholder="0000 0000 0000 0000">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Срок действия</label>
+                                <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">CVV</label>
+                                <input type="text" id="card-cvv" class="form-control" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Комментарий (необязательно)</label>
+                        <textarea id="order-comment" class="form-control" rows="2"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" id="checkout-submit" class="btn btn-gold">Подтвердить заказ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const phoneInput = document.getElementById('order-phone');
+    function formatPhone(v){
+        const digits = v.replace(/\D/g,'').replace(/^8/,'7');
+        if(!digits) return '';
+        let out = '+' + digits[0];
+        if(digits.length > 1) out += ' (' + (digits.substr(1,3) || '') + ')';
+        if(digits.length > 4) out += ' ' + (digits.substr(4,3) || '');
+        if(digits.length > 7) out += '-' + (digits.substr(7,2) || '');
+        if(digits.length > 9) out += '-' + (digits.substr(9,2) || '');
+        return out;
+    }
+    phoneInput && phoneInput.addEventListener('input', (e) => {
+        e.target.value = formatPhone(e.target.value);
+    });
+
+    const cardInput = document.getElementById('card-number');
+    const expiryInput = document.getElementById('card-expiry');
+    const cvvInput = document.getElementById('card-cvv');
+    function formatCard(v){
+        return v.replace(/\D/g,'').substr(0,16).replace(/(\d{4})(?=\d)/g,'$1 ').trim();
+    }
+    function formatExpiry(v){
+        const digits = v.replace(/\D/g,'').substr(0,4);
+        if(digits.length <=2) return digits;
+        return digits.substr(0,2) + '/' + digits.substr(2,2);
+    }
+    cardInput && cardInput.addEventListener('input', e => e.target.value = formatCard(e.target.value));
+    expiryInput && expiryInput.addEventListener('input', e => e.target.value = formatExpiry(e.target.value));
+    cvvInput && cvvInput.addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g,'').substr(0,3));
+
+    const paymentRadios = document.querySelectorAll('input[name="payment-method"]');
+    const cardFields = document.querySelector('.card-fields');
+    function toggleCardFields(){
+        const selected = document.querySelector('input[name="payment-method"]:checked');
+        if(selected && selected.value === 'card'){
+            cardFields.classList.remove('hidden');
+        } else {
+            cardFields.classList.add('hidden');
+        }
+    }
+    paymentRadios.forEach(r => r.addEventListener('change', toggleCardFields));
+    toggleCardFields();
+
+    const shopSelect = document.getElementById('order-shop');
+    const shopHours = document.getElementById('shop-hours');
+    shopSelect && shopSelect.addEventListener('change', () => {
+        const opt = shopSelect.selectedOptions[0];
+        if(!opt || !opt.dataset.address){
+            shopHours.textContent = 'Выберите магазин, чтобы увидеть адрес и график.';
+            return;
+        }
+        shopHours.textContent = `Адрес: ${opt.dataset.address}. График: ${opt.dataset.hours || 'уточните у менеджера'}`;
+    });
+
+    const submitBtn = document.getElementById('checkout-submit');
+    function readCSRF(){
+        const el = document.getElementById('csrf-token');
+        if (el && el.value) return el.value;
+        const cookie = document.cookie.split('; ').find(x => x.startsWith('csrftoken='));
+        return cookie ? cookie.split('=')[1] : null;
+    }
+    submitBtn && submitBtn.addEventListener('click', () => {
+        const token = readCSRF();
+        const name = document.getElementById('order-name').value.trim();
+        const phone = document.getElementById('order-phone').value.trim();
+        const shopOpt = document.getElementById('order-shop').selectedOptions[0];
+        const comment = document.getElementById('order-comment').value.trim();
+        const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+        if(!shopOpt || !shopOpt.value){ alert('Выберите пункт самовывоза.'); return; }
+        if(!phone){ alert('Введите телефон.'); return; }
+        let paymentInfo = '';
+        if(paymentMethod && paymentMethod.value === 'card'){
+            const card = cardInput.value.replace(/\s/g,'');
+            const expiry = expiryInput.value.trim();
+            const cvv = cvvInput.value.trim();
+            if(card.length !== 16){ alert('Введите номер карты.'); return; }
+            if(!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)){ alert('Введите срок действия карты.'); return; }
+            if(cvv.length !== 3){ alert('Введите CVV.'); return; }
+            paymentInfo = `Оплата картой ****${card.substr(-4)} (срок ${expiry})`;
+        } else {
+            paymentInfo = 'Оплата при получении';
+        }
+
+        const items = [];
+        document.querySelectorAll('.item-qty').forEach(i => {
+            const id = i.dataset.itemId;
+            const cb = document.querySelector(`.item-select[data-item-id="${id}"]`);
+            if(!cb || !cb.checked) return;
+            const spid = i.dataset.shopProductId;
+            const qty = parseInt(i.value||'0');
+            if(spid && qty > 0){ items.push({ shop_product: parseInt(spid), quantity: qty }); }
+        });
+        if(items.length === 0){ alert('Корзина пуста.'); return; }
+
+        const shopAddress = shopOpt.dataset.address || '';
+        const addr = `Самовывоз: ${shopOpt.textContent.trim()} (${shopAddress})`;
+        const fullComment = `Имя: ${name}; Телефон: ${phone}; Оплата: ${paymentInfo}; ${comment}`;
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['X-CSRFToken'] = token;
+
+        fetch('/orders/place/', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: headers,
+            body: JSON.stringify({ address_delivery: addr, comment: fullComment, items: items })
+        })
+        .then(async r => {
+            if (r.status === 401 || r.status === 403) {
+                alert('Сессия истекла. Пожалуйста, войдите заново.');
+                window.location.href = '/login/?next=' + encodeURIComponent('/cart/');
+                return Promise.reject('auth');
+            }
+            if (r.status >= 400) {
+                let json = {};
+                try { json = await r.json(); } catch(e){}
+                const err = json && json.error ? JSON.stringify(json.error) : 'Не удалось оформить заказ.';
+                alert(err);
+                return Promise.reject('server-error');
+            }
+            return r.json();
+        })
+        .then(data => {
+            if(data && data.id){
+                const modalEl = document.getElementById('checkoutModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if(modal) modal.hide();
+                window.location.href = '/orders/';
+            } else {
+                alert('Не удалось оформить заказ.');
+                window.location.href = '/orders/';
+            }
+        })
+        .catch(() => {});
+    });
+});
+</script>
+{% endblock %}

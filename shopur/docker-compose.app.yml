@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: shopur-db
+    env_file:
+      - ../.env
+    environment:
+      POSTGRES_DB: ${DB_NAME:-shopurpro}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-shopurpro}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    container_name: shopur-web
+    env_file:
+      - ../.env
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      FIXTURE_PATH: /app/backups/backup_20251122_184946.json
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
