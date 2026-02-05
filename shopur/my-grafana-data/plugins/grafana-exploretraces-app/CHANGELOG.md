@@ -1,5 +1,53 @@
 # Changelog
 
+## 1.3.0
+
+##### Chores
+
+* **deps:**
+  *  update dependency @babel/core to v7.28.5 (#577) (3dfd3cd5)
+  *  update swc monorepo (#580) (8f14d360)
+  *  update grafana/tempo:latest docker digest to 6d4f1f3 (#599) (8f747508)
+*  Update grafana to 12.3.0 (#609) (deb155f2)
+* **config:**  migrate config renovate.json (#607) (aee65df3)
+
+##### Continuous Integration
+
+*  Update workflow permissions (#623) (0269bfc5)
+
+##### Documentation Changes
+
+*  Minor updates to docs (#608) (af917d5d)
+
+##### New Features
+
+*  Show favorites first in the attribute sidebar (#625) (975e40c6)
+*  Exceptions Tab v2 (#619) (7ee82314)
+*  Adaptive Traces Integration (#614) (c3c77e68)
+* **links:**  grafana assistant traces drilldown full query navigation (#541) (64e42e8e)
+
+
+## 1.2.1
+
+##### Chores
+
+*  Add Renovate rules (#606) (d836c42a)
+* **deps:**
+  *  update dependency nwsapi to v2.2.22 (#572) (07865f22)
+  *  pin dependencies (#569) (f3353005)
+
+##### Documentation Changes
+
+*  Exception tab (#585) (364fe32e)
+*  Doc updates for 554, 558, and 555 (#564) (68d41f9c)
+
+##### New Features
+
+*  Mini embeddable Traces Drilldown (#592) (7aecc60e)
+*  Find single span errors and high latency on the root cause tab (#594) (db46387a)
+*  Link to Logs Drilldown instead of Explore (#563) (6ea96dd3)
+
+
 ## 1.2.0
 
 ##### Chores

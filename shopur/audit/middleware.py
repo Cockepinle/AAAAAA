@@ -1,12 +1,13 @@
 from django.utils.deprecation import MiddlewareMixin
 from .metrics import update_business_metrics
+from .metrics_influx import push_to_influx
 
 
 class BusinessMetricsMiddleware(MiddlewareMixin):
     IGNORED_PATH_PREFIXES = (
         "/static/",
         "/media/",
-        "/metrics",       
+        "/metrics",  
     )
 
     def process_request(self, request):
@@ -17,9 +18,10 @@ class BusinessMetricsMiddleware(MiddlewareMixin):
 
         try:
             update_business_metrics()
-        except Exception:
-            pass
+
+            push_to_influx()
+
+        except Exception as e:
+            print("Ошибка обновления/отправки метрик:", e)
 
         return None
-
-   

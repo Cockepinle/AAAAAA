@@ -34,3 +34,4 @@ services:
 
 networks:
   monitoring_system:
+    external: true

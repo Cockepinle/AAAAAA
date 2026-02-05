@@ -105,14 +105,14 @@ class BackupGuideAdmin(admin.ModelAdmin):
                     '--exclude', 'audit.BackupGuide',
                     stdout=fh,
                 )
-            messages.success(request, f'✅ Бэкап успешно создан: <code>{filename.name}</code>')
+            messages.success(request, f'Бэкап успешно создан: <code>{filename.name}</code>')
         except Exception as exc:
-            messages.error(request, f'❌ Ошибка при создании бэкапа: {exc}')
+            messages.error(request, f'Ошибка при создании бэкапа: {exc}')
 
     def _run_restore(self, request):
         uploaded = request.FILES.get('restore_file')
         if not uploaded:
-            messages.error(request, '❌ Выберите файл с дампом для восстановления.')
+            messages.error(request, 'Выберите файл с дампом для восстановления.')
             return
         try:
             with tempfile.NamedTemporaryFile(delete=False, suffix='.json', mode='w', encoding='utf-8') as tmp:
@@ -120,21 +120,17 @@ class BackupGuideAdmin(admin.ModelAdmin):
                     tmp.write(chunk.decode('utf-8'))
                 tmp_path = tmp.name
 
-            # Flush current data (sessions will be wiped)
             call_command('flush', '--noinput')
 
-            # После flush текущая сессия удалена — создаём новую, чтобы middleware не упал
             request.session.flush()
 
-            # Load from backup
             call_command('load_fixture_safe', tmp_path)
 
-            # Fix triggers
             call_command('fix_trigger')
 
-            messages.success(request, '✅ Данные успешно восстановлены и триггеры БД исправлены. Пожалуйста, войдите снова.')
+            messages.success(request, 'Данные успешно восстановлены и триггеры БД исправлены. Пожалуйста, войдите снова.')
         except Exception as exc:
-            messages.error(request, f'❌ Ошибка при восстановлении: {exc}')
+            messages.error(request, f'Ошибка при восстановлении: {exc}')
         finally:
             if 'tmp_path' in locals() and os.path.exists(tmp_path):
                 os.remove(tmp_path)

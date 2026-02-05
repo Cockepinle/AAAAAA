@@ -1,0 +1,35 @@
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    volumes:
+      - influx_db_data:/var/lib/influxdb2
+    ports:
+      - "8086:8086"
+    environment:
+      - TZ=Europe/Moscow
+    networks:
+      - monitoring_system
+
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    restart: always
+    depends_on:
+      - influxdb
+    networks:
+      - monitoring_system
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - TZ=Europe/Moscow
+    privileged: true
+
+volumes:
+  influx_db_data:
+
+networks:
+  monitoring_system:
+    external: true

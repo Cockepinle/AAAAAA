@@ -1,5 +1,119 @@
 # Changelog
 
+## 1.0.29
+
+##### Chores
+
+* **deps:**
+  *  Update pnpm to v10.28.2 [SECURITY] (#990) (2ddab3b7)
+  *  Pin mcr.microsoft.com/playwright Docker tag to 35c7d48 (#914) (c9da3f25)
+  *  Update dependency @grafana/plugin-e2e to v3 (#939) (2418890b)
+  *  Update actions/upload-artifact action to v6 (#919) (bf086f6e)
+  *  Update dependency sass to v1.97.3 (#916) (d2cbe54a)
+  *  update grafana/shared-workflows/get-vault-secrets action to v1.3.0 (#917) (709836ed)
+  *  Update dependency @types/node to v20.19.30 (#915) (7ebb4784)
+*  migrate from npm to pnpm (#957) (2bdf5944)
+*  Download translations from Crowdin (#975) (0a18c236)
+*  quick search assistant experiment (#959) (531b187f)
+*  migrate eslint config to `.mjs` (#962) (052ef827)
+*  merge eslint-plugin-jsx-a11y into main eslint config (#956) (408f2f47)
+*  update @grafana/create-plugin to v6.7.5 (#929) (6591e4f6)
+* **i18n:**  add crowdin github actions (#942) (8d6b8783)
+* **eslint:**  add @grafana/i18n rules (#926) (140798ec)
+
+##### New Features
+
+*  Knowledge Graph source metrics enhancements (#958) (2201b01e)
+*  create alert from metric scene (#937) (8a90598a)
+
+##### Bug Fixes
+
+* **ci:**
+  *  remove double dashes (#992) (0a36e456)
+  *  remove extraneous `--` in bundle stats script (#991) (1e57122c)
+*  update i18n-extract to use i18next-cli (#987) (e0fccfc3)
+*  add webpack alias for @grafana/i18n to resolve pnpm module duplication (#985) (7bf7d895)
+
+##### Refactors
+
+*  leverage disco union for improved type safety (#960) (4358c90b)
+
+
+## 1.0.28
+
+##### Chores
+
+*  add eslint-plugin-jsx-a11y and fix a11y violations (#924) (a805a40a)
+*  handle TODOs (#864) (26615aa9)
+*  add @grafana/i18n (#868) (86af4387)
+*  Remove investigations (#902) (8ae002f3)
+* **deps:**
+  *  Update docker.io/prom/prometheus Docker tag to v3.8.1 (#838) (9fb8c24d)
+  *  Update dependency @prometheus-io/lezer-promql to ^0.308.0 (#877) (d738973a)
+
+##### Continuous Integration
+
+*  upgrade shared workflows dependency (#909) (f362aa6f)
+
+##### New Features
+
+*  mini drilldown grafana assistant navigation integration (#899) (404db242)
+*  assistant quicksearch integration to ask a question (#908) (0721bcce)
+
+##### Bug Fixes
+
+*  bump @remix-run/router (#912) (a508afe5)
+*  group by utf8 label (#906) (77d6b227)
+
+
+## 1.0.27
+
+##### Chores
+
+*  adds "Resolves <link to issue>" so github automatically resolves issues (#895) (0e4d8765)
+
+##### Bug Fixes
+
+* **cve:**  update qs subdependency (#900) (4f8fbb5f)
+* **OpenFeature:**  gracefully degrade when OFREP endpoint is unavailable (#898) (9f7a7145)
+
+
+## 1.0.26
+
+##### Chores
+
+*  replace hardcoded constant with enum (#890) (fecb8ebd)
+*  add OpenFeature context to sidebar analytics (#893) (15980697)
+*  use PluginExtensionPoints constant from @grafana/data (#874) (648b4160)
+*  add `openFeature` context (#891) (fb7d6934)
+
+##### Continuous Integration
+
+*  bump shared workflows to `4.3.0` (#885) (8ec2aafc)
+
+##### New Features
+
+*  implement the tree filter experiment with open feature (#892) (33594f07)
+*  init OpenFeature flag evaluations (#886) (7d68f7bf)
+*  assistant integration fast follow (#888) (caeed347)
+
+
+## 1.0.25
+
+##### Chores
+
+* **deps:**  Update dependency @types/node to v20.19.25 (#875) (a2a56193)
+
+##### New Features
+
+* **assistant:**  add entry point to grafana assistant from metric scene (#883) (2f44ce5f)
+*  add exposed component for Knowledge Graph source metrics (#873) (120ff2d6)
+
+##### Bug Fixes
+
+*  handle non-error object with `message` (#879) (0a92be94)
+
+
 ## 1.0.24
 
 ##### Chores
@@ -16,26 +130,24 @@
 
 ##### Chores
 
-* **deps:**  update dependency @grafana/faro-web-sdk to v2.0.2 (#854) (be2772dc)
-*  playwright only screenshot major versions (#860) (161ba87c)
-*  bump js-yaml from 3.14.1 to 3.14.2 (#857) (c6b07868)
-*  bump glob from 10.4.5 to 11.1.0 in the npm_and_yarn group across 1 directory (#855) (a2c8711c)
+- **deps:** update dependency @grafana/faro-web-sdk to v2.0.2 (#854) (be2772dc)
+- playwright only screenshot major versions (#860) (161ba87c)
+- bump js-yaml from 3.14.1 to 3.14.2 (#857) (c6b07868)
+- bump glob from 10.4.5 to 11.1.0 in the npm_and_yarn group across 1 directory (#855) (a2c8711c)
 
 ##### New Features
 
-* **filters:**  simple tree filter for prefix filters (#858) (750af7cd)
+- **filters:** simple tree filter for prefix filters (#858) (750af7cd)
 
 ##### Bug Fixes
 
-* **deps:**  update dependency @bsull/augurs to ^0.10.0 (#842) (d88b79e0)
+- **deps:** update dependency @bsull/augurs to ^0.10.0 (#842) (d88b79e0)
 
 ##### Tests
 
-*  loosen up playwright screenshot version check (#826) (d2b36b72)
-
+- loosen up playwright screenshot version check (#826) (d2b36b72)
 
 ## 1.0.22
-
 
 ## 1.0.21
 
