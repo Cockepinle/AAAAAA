@@ -1,8 +1,59 @@
-stage: 
+stages:
+  - build
+  - lint
+  - api
+  - security
 
-test-job:
-  stage: test
+image: python:3.11
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+
+build-project:
+  stage: build
   script:
-    - echo "Начало"
-    - echo "Второй этап"
-    - echo "Конец"
+    - echo "Проверка сборки Django проекта"
+    - python manage.py check
+    - python manage.py makemigrations --check --dry-run
+    - python manage.py migrate --plan
+    - echo "Сборка проекта успешна"
+
+lint-project:
+  stage: lint
+  script:
+    - echo "Проверка синтаксических ошибок (flake8)"
+    - pip install flake8
+    - flake8 . --output-file=flake8-report.txt
+    - echo "Линтер завершил проверку"
+  artifacts:
+    paths:
+      - flake8-report.txt
+    expire_in: 7 days
+
+generate-api-schema:
+  stage: api
+  script:
+    - echo "Генерация схемы API интернет-магазина"
+    - python manage.py spectacular --file schema.yml
+    - echo "schema.yml создан"
+  artifacts:
+    paths:
+      - schema.yml
+    expire_in: 7 days
+
+security-scan:
+  stage: security
+  script:
+    - echo "Проверка безопасности кода проекта"
+    - pip install bandit
+    - bandit -r . -f txt -o bandit-report.txt
+    - echo "Отчет bandit создан"
+  artifacts:
+    paths:
+      - bandit-report.txt
+    expire_in: 7 days
