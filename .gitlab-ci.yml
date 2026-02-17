@@ -4,16 +4,6 @@ stages:
   - api
   - security
 
-image: python:3.11
-
-cache:
-  paths:
-    - .cache/pip
-
-before_script:
-  - pip install --upgrade pip
-  - pip install -r requirements.txt
-
 build-project:
   stage: build
   script:
@@ -27,7 +17,6 @@ lint-project:
   stage: lint
   script:
     - echo "Проверка синтаксических ошибок (flake8)"
-    - pip install flake8
     - flake8 . --output-file=flake8-report.txt
     - echo "Линтер завершил проверку"
   artifacts:
@@ -50,7 +39,6 @@ security-scan:
   stage: security
   script:
     - echo "Проверка безопасности кода проекта"
-    - pip install bandit
     - bandit -r . -f txt -o bandit-report.txt
     - echo "Отчет bandit создан"
   artifacts:
