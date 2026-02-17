@@ -8,6 +8,7 @@ build-project:
   stage: build
   script:
     - echo "Проверка сборки Django проекта"
+    - cd shopur
     - python manage.py check
     - python manage.py makemigrations --check --dry-run
     - python manage.py migrate --plan
@@ -28,11 +29,12 @@ generate-api-schema:
   stage: api
   script:
     - echo "Генерация схемы API интернет-магазина"
+    - cd shopur
     - python manage.py spectacular --file schema.yml
     - echo "schema.yml создан"
   artifacts:
     paths:
-      - schema.yml
+      - shopur/schema.yml
     expire_in: 7 days
 
 security-scan:
