@@ -37,8 +37,7 @@ generate-api-schema:
     - python3 manage.py spectacular --file ../artifacts/schema.yml
   artifacts:
     paths:
-      - artifacts/schema.yml
-    when: always
+      - shopur/schema.yml
 
 security-scan:
   stage: security
