@@ -22,10 +22,7 @@ lint-project:
     - echo "Проверка синтаксических ошибок (flake8)"
     - flake8 . --output-file=flake8-report.txt || true
     - cat flake8-report.txt
-  artifacts:
-    paths:
-      - flake8-report.txt
-    expire_in: 7 days
+ 
 
 generate-api-schema:
   stage: api
@@ -40,7 +37,4 @@ security-scan:
   script:
     - echo "Проверка безопасности кода проекта"
     - bandit -r . -f txt -o bandit-report.txt
-  artifacts:
-    paths:
-      - bandit-report.txt
-    expire_in: 7 days
+
