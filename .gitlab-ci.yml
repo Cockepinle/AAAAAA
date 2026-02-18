@@ -33,10 +33,7 @@ generate-api-schema:
     - echo "Генерация схемы API интернет-магазина"
     - cd shopur
     - python3 manage.py spectacular --file schema.yml
-  artifacts:
-    paths:
-      - shopur/schema.yml
-    expire_in: 7 days
+
 
 security-scan:
   stage: security
