@@ -1,24 +1,23 @@
-image: python:3.11
-
 stages:
   - build
   - lint
   - api
   - security
 
-before_script:
-  - pip install -r requirements.txt
+variables:
+  USE_SQLITE: "True"
 
 build-project:
   stage: build
   script:
-    - cd shopur
+    - echo "Проверка сборки Django проекта"
     - python3 manage.py check
     - python3 manage.py makemigrations --check --dry-run
 
 lint-project:
   stage: lint
   script:
+    - echo "Проверка flake8"
     - flake8 . --output-file=flake8-report.txt
   artifacts:
     paths:
@@ -28,15 +27,17 @@ lint-project:
 generate-api-schema:
   stage: api
   script:
-    - cd shopur
+    - echo "Генерация OpenAPI схемы"
     - python3 manage.py spectacular --file schema.yml
   artifacts:
     paths:
-      - shopur/schema.yml
+      - schema.yml
+    when: always
 
 security-scan:
   stage: security
   script:
+    - echo "Проверка bandit"
     - bandit -r . -f txt -o bandit-report.txt
   artifacts:
     paths:
