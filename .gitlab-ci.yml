@@ -4,13 +4,9 @@ stages:
   - api
   - security
 
-variables:
-  USE_SQLITE: "True"
-
 build-project:
   stage: build
   script:
-    - echo "Проверка сборки Django проекта"
     - cd shopur
     - python3 manage.py check
     - python3 manage.py makemigrations --check --dry-run
@@ -18,36 +14,30 @@ build-project:
 lint-project:
   stage: lint
   script:
-    - echo "Проверка flake8"
     - mkdir -p artifacts
-    - flake8 . --output-file=artifacts/flake8-report.txt || true
-    - cat artifacts/flake8-report.txt
+    - flake8 . --output-file=artifacts/flake8-report.txt
   artifacts:
     paths:
       - artifacts/flake8-report.txt
     when: always
 
-
 generate-api-schema:
   stage: api
   script:
-    - echo "Генерация OpenAPI схемы"
     - mkdir -p artifacts
     - cd shopur
     - python3 manage.py spectacular --file ../artifacts/schema.yml
   artifacts:
     paths:
-      - shopur/schema.yml
+      - artifacts/schema.yml
+    when: always
 
 security-scan:
   stage: security
   script:
-    - echo "Проверка bandit"
     - mkdir -p artifacts
-    - bandit -r . -f txt -o artifacts/bandit-report.txt || true
-    - cat artifacts/bandit-report.txt
+    - bandit -r . -f txt -o artifacts/bandit-report.txt
   artifacts:
     paths:
       - artifacts/bandit-report.txt
     when: always
-
