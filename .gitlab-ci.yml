@@ -20,11 +20,7 @@ lint-project:
     - flake8 . --output-file=flake8-report.txt || true
     - cat flake8-report.txt
     - echo "Линтер завершил проверку"
-  artifacts:
-    paths:
-      - flake8-report.txt
-    expire_in: 7 days
-
+  
 
 generate-api-schema:
   stage: api
