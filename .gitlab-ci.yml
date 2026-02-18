@@ -4,6 +4,9 @@ stages:
   - api
   - security
 
+variables:
+  USE_SQLITE: "True"
+
 build-project:
   stage: build
   script:
@@ -19,18 +22,17 @@ lint-project:
     - echo "Проверка синтаксических ошибок (flake8)"
     - flake8 . --output-file=flake8-report.txt || true
     - cat flake8-report.txt
-    - echo "Линтер завершил проверку"
-  
+  artifacts:
+    paths:
+      - flake8-report.txt
+    expire_in: 7 days
 
 generate-api-schema:
   stage: api
-  variables:
-    USE_SQLITE: "True"
   script:
     - echo "Генерация схемы API интернет-магазина"
     - cd shopur
     - python3 manage.py spectacular --file schema.yml
-    - echo "schema.yml создан"
   artifacts:
     paths:
       - shopur/schema.yml
@@ -41,7 +43,6 @@ security-scan:
   script:
     - echo "Проверка безопасности кода проекта"
     - bandit -r . -f txt -o bandit-report.txt
-    - echo "Отчет bandit создан"
   artifacts:
     paths:
       - bandit-report.txt
