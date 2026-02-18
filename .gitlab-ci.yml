@@ -9,8 +9,8 @@ build-project:
   script:
     - echo "Проверка сборки Django проекта"
     - cd shopur
-    - python manage.py check
-    - python manage.py makemigrations --check --dry-run
+    - python3 manage.py check
+    - python3 manage.py makemigrations --check --dry-run
     - echo "Сборка проекта успешна"
 
 lint-project:
@@ -27,7 +27,7 @@ generate-api-schema:
   script:
     - echo "Генерация схемы API интернет-магазина"
     - cd shopur
-    - python manage.py spectacular --file schema.yml
+    - python3 manage.py spectacular --file schema.yml
     - echo "schema.yml создан"
   artifacts:
     paths:
