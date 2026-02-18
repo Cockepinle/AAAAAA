@@ -1,40 +1,44 @@
+image: python:3.11
+
 stages:
   - build
   - lint
   - api
   - security
 
-variables:
-  USE_SQLITE: "True"
+before_script:
+  - pip install -r requirements.txt
 
 build-project:
   stage: build
   script:
-    - echo "Проверка сборки Django проекта"
     - cd shopur
     - python3 manage.py check
     - python3 manage.py makemigrations --check --dry-run
-    - echo "Сборка проекта успешна"
 
 lint-project:
   stage: lint
   script:
-    - echo "Проверка синтаксических ошибок (flake8)"
-    - flake8 . --output-file=flake8-report.txt || true
-    - cat flake8-report.txt
- 
+    - flake8 . --output-file=flake8-report.txt
+  artifacts:
+    paths:
+      - flake8-report.txt
+    when: always
 
 generate-api-schema:
   stage: api
   script:
-    - echo "Генерация схемы API интернет-магазина"
     - cd shopur
     - python3 manage.py spectacular --file schema.yml
-
+  artifacts:
+    paths:
+      - shopur/schema.yml
 
 security-scan:
   stage: security
   script:
-    - echo "Проверка безопасности кода проекта"
-    - bandit -r . -f txt -o bandit-report.txt || true
-
+    - bandit -r . -f txt -o bandit-report.txt
+  artifacts:
+    paths:
+      - bandit-report.txt
+    when: always
