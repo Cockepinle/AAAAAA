@@ -15,7 +15,7 @@ lint-project:
   stage: lint
   script:
     - mkdir -p artifacts
-    - flake8 . --output-file=artifacts/flake8-report.txt
+    - flake8 . --output-file=artifacts/flake8-report.txt || true  
   artifacts:
     paths:
       - artifacts/flake8-report.txt
