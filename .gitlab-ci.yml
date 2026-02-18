@@ -24,6 +24,8 @@ lint-project:
 
 generate-api-schema:
   stage: api
+  variables:
+    USE_SQLITE: "True"
   script:
     - echo "Генерация схемы API интернет-магазина"
     - cd shopur
