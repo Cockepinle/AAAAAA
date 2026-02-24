@@ -3,6 +3,7 @@ djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 drf-spectacular==0.27.2
 django-prometheus==2.3.1
+django-extensions
 python-dotenv==1.0.1
 cryptography==46.0.3
 psycopg2-binary==2.9.9
