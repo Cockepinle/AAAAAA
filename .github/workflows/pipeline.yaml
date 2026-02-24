@@ -48,7 +48,7 @@ jobs:
           python-version: "3.12"
       - run: pip install -r shopur/requirements.txt
       - run: |
-          mkdir -p artifacts
+          mkdir -p ../artifacts
           python3 manage.py spectacular --file ../artifacts/schema.yml
         working-directory: shopur
       - if: always()
