@@ -7,15 +7,23 @@ stages:
 build-project:
   stage: build
   script:
+    - echo "Начало этапа сборки проекта"
+    - echo "Переход в директорию shopur"
     - cd shopur
+    - echo "Проверка конфигурации проекта Django"
     - python3 manage.py check
+    - echo "Проверка наличия незакоммиченных миграций"
     - python3 manage.py makemigrations --check --dry-run
+    - echo "Этап сборки успешно завершен"
 
 lint-project:
   stage: lint
   script:
+    - echo "Запуск проверки кода линтером"
     - mkdir -p artifacts
+    - echo "Запуск flake8 и сохранение отчета"
     - flake8 . --output-file=artifacts/flake8-report.txt || true  
+    - echo "Проверка линтером завершена"
   artifacts:
     paths:
       - artifacts/flake8-report.txt
@@ -24,9 +32,13 @@ lint-project:
 generate-api-schema:
   stage: api
   script:
+    - echo "Генерация API-схемы проекта"
     - mkdir -p artifacts
+    - echo "Переход в директорию shopur"
     - cd shopur
+    - echo "Создание файла schema.yml"
     - python3 manage.py spectacular --file ../artifacts/schema.yml
+    - echo "API-схема успешно создана"
   artifacts:
     paths:
       - artifacts/schema.yml
@@ -35,8 +47,11 @@ generate-api-schema:
 security-scan:
   stage: security
   script:
+    - echo "Запуск проверки безопасности проекта"
     - mkdir -p artifacts
+    - echo "Анализ кода с помощью bandit"
     - bandit -r . -f txt -o artifacts/bandit-report.txt || true
+    - echo "Проверка безопасности завершена"
   artifacts:
     paths:
       - artifacts/bandit-report.txt
