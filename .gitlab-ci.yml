@@ -4,25 +4,44 @@ stages:
   - api
   - security
 
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  key: "$CI_PROJECT_ID-pip"
+  paths:
+    - .cache/pip
+    - .venv
+
+before_script:
+  - echo "Подготовка Python-окружения"
+  - python3 -m venv .venv
+  - . .venv/bin/activate
+  - python -m pip install --upgrade pip
+  - pip install -r shopur/requirements.txt
+  - pip install flake8 bandit
+
 build-project:
   stage: build
   script:
     - echo "Начало этапа сборки проекта"
+    - . .venv/bin/activate
     - echo "Переход в директорию shopur"
     - cd shopur
     - echo "Проверка конфигурации проекта Django"
-    - python3 manage.py check
+    - python manage.py check
     - echo "Проверка наличия незакоммиченных миграций"
-    - python3 manage.py makemigrations --check --dry-run
+    - python manage.py makemigrations --check --dry-run
     - echo "Этап сборки успешно завершен"
 
 lint-project:
   stage: lint
   script:
     - echo "Запуск проверки кода линтером"
+    - . .venv/bin/activate
     - mkdir -p artifacts
     - echo "Запуск flake8 и сохранение отчета"
-    - flake8 . --output-file=artifacts/flake8-report.txt || true  
+    - flake8 . --output-file=artifacts/flake8-report.txt || true
     - echo "Проверка линтером завершена"
   artifacts:
     paths:
@@ -33,11 +52,12 @@ generate-api-schema:
   stage: api
   script:
     - echo "Генерация API-схемы проекта"
+    - . .venv/bin/activate
     - mkdir -p artifacts
     - echo "Переход в директорию shopur"
     - cd shopur
     - echo "Создание файла schema.yml"
-    - python3 manage.py spectacular --file ../artifacts/schema.yml
+    - python manage.py spectacular --file ../artifacts/schema.yml
     - echo "API-схема успешно создана"
   artifacts:
     paths:
@@ -48,6 +68,7 @@ security-scan:
   stage: security
   script:
     - echo "Запуск проверки безопасности проекта"
+    - . .venv/bin/activate
     - mkdir -p artifacts
     - echo "Анализ кода с помощью bandit"
     - bandit -r . -f txt -o artifacts/bandit-report.txt || true
