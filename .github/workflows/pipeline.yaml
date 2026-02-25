@@ -1,13 +1,17 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build-project:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - run: pip install -r shopur/requirements.txt
@@ -20,16 +24,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-project
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - run: pip install -r shopur/requirements.txt
       - run: |
           mkdir -p artifacts
-          flake8 . --output-file=artifacts/flake8-report.txt || true
+          flake8 . > artifacts/flake8-report.txt || true
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: flake8-report
           path: artifacts/flake8-report.txt
@@ -38,17 +42,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: lint-project
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - run: pip install -r shopur/requirements.txt
       - run: |
-          mkdir -p artifacts
+          mkdir -p ../artifacts
           python3 manage.py spectacular --file ../artifacts/schema.yml
         working-directory: shopur
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: api-schema
           path: artifacts/schema.yml
@@ -57,16 +61,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: generate-api-schema
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - run: pip install -r shopur/requirements.txt
       - run: |
           mkdir -p artifacts
-          bandit -r . -f txt -o artifacts/bandit-report.txt || true
+          bandit -r . -f txt > artifacts/bandit-report.txt || true
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: bandit-report
           path: artifacts/bandit-report.txt
