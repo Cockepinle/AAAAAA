@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - run: pip install -r shopur/requirements.txt
       - run: python3 manage.py check
         working-directory: shopur
@@ -27,13 +27,13 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - run: pip install -r shopur/requirements.txt
       - run: |
           mkdir -p artifacts
-          flake8 . > artifacts/flake8-report.txt 2>&1 || true
+          flake8 . > artifacts/flake8-report.txt || true
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: flake8-report
           path: artifacts/flake8-report.txt
@@ -45,14 +45,14 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - run: pip install -r shopur/requirements.txt
       - run: |
           mkdir -p ../artifacts
           python3 manage.py spectacular --file ../artifacts/schema.yml
         working-directory: shopur
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: api-schema
           path: artifacts/schema.yml
@@ -64,13 +64,13 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - run: pip install -r shopur/requirements.txt
       - run: |
           mkdir -p artifacts
-          bandit -r . -f txt > artifacts/bandit-report.txt 2>&1 || true
+          bandit -r . -f txt > artifacts/bandit-report.txt || true
       - if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: bandit-report
           path: artifacts/bandit-report.txt
