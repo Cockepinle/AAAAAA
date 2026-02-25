@@ -15,20 +15,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r shopur/requirements.txt
-      - run: |
-          mkdir -p ../artifacts
-          python3 manage.py check > ../artifacts/build-check.txt 2>&1
+      - run: python3 manage.py check
         working-directory: shopur
-      - run: |
-          python3 manage.py makemigrations --check --dry-run > ../artifacts/migrations-check.txt 2>&1
+      - run: python3 manage.py makemigrations --check --dry-run
         working-directory: shopur
-      - if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-report
-          path: |
-            artifacts/build-check.txt
-            artifacts/migrations-check.txt
 
   lint-project:
     runs-on: ubuntu-latest
